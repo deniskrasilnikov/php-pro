@@ -1,0 +1,91 @@
+////////////////////////////////
+// GOOD naming example
+////////////////////////////////
+
+emergencyPhoneNumber = 911
+actorLastName = "Eastwood"
+bankAccountBalance = 4353.45
+
+annualReportFile = openFile("/path/to/annualReport.csv")
+printReport(annualReportFile)
+
+avatarImage = openFile("/path/to/avatar.png")
+convertAvatarImage(avatarImage)
+
+
+////////////////////////////////
+// GOOD class example
+////////////////////////////////
+
+class Car {
+
+    string color = 'red';
+    number horsePower = 150;
+    number cylinderCount = 4;
+    string vinNumber = '20Z63789D4004H7'
+    Owner owner = null
+
+    function getColor()
+    {
+       return self.color
+    }
+
+    function getVinNumber()
+    {
+        return self.vinNumber
+    }
+
+    function setVinNumber(newNumber)
+    {
+        self.vinNumber = newNumber
+    }
+
+    function setOwner(Owner owner)
+    {
+        self.owner = owner
+    }
+
+    function getOwnerName()
+    {
+        self.owner.getName()
+    }
+
+    function calculateMonthFuelConsumption(number monthNumber)
+    {
+        if (monthNumber < 1 or monthNumber > 12) {
+            throw Exception("Month number must be between 1 and 12")
+
+        fuelAmount = 0
+
+        // calculate fuel consumption .. lots of code
+
+        return fuelAmount
+    }
+}
+
+
+function calculateRealMileage(Car car)
+{
+    // doing something with "car"
+
+    return mileage
+}
+
+////////////////////////////////
+// GOOD code grouping example
+////////////////////////////////
+
+MarketingReport marketingReport
+marketingReport.computeQuarterly()
+marketingReport.computeAnnual()
+marketingReport.print()
+
+SalesReport salesReport
+salesReport.computeQuarterly()
+salesReport.computeAnnual()
+salesReport.print()
+
+TravelReport travelReport
+travelReport.computeQuarterly()
+travelReport.computeAnnual()
+travelReport.print()

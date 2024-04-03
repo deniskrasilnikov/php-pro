@@ -1,0 +1,102 @@
+////////////////////////////////
+// BAD naming example
+////////////////////////////////
+
+xx = 911
+name = "Eastwood"
+balance = 4353.45
+
+file1 = openFile("/path/to/annualReport")
+printFileData(file1)
+
+file1 = openFile("/path/to/avatar")
+convertImage(file1)
+
+
+////////////////////////////////
+// BAD class example
+////////////////////////////////
+
+class Car {
+
+    color = 'red';
+    hp = 150;
+    cc = 4;
+    vn = '20Z63789D4004H7'
+    person = null
+
+
+    function getCarColor()
+    {
+       return self.color
+    }
+
+    function getCarVn()
+    {
+        return self.vn
+    }
+
+
+        function setPerson(p)
+        {
+            self.person = p
+        }
+
+
+    function setAll(vn, p, color)
+    {
+        self.vn = vn
+        self.person = p
+        self.color = color
+    }
+
+    function getName()
+    {
+        self.person.name()
+    }
+
+    // this method returns car fuel consumption during given month
+    function calcConsumption(num)
+    {
+        amnt = 0
+
+        // calculate fuel consumption .. lots of code
+
+        return amnt
+    )
+  }
+}
+
+
+function calсMileage(Car c)
+{
+  // do something with "c"
+
+  return mil
+}
+
+////////////////////////////////
+// REDUNDANT NAMING example
+////////////////////////////////
+Car car
+car.getCarColor()
+
+////////////////////////////////
+// BAD code grouping example
+////////////////////////////////
+
+MarketingReport marketingReport
+SalesReport salesReport
+TravelReport travelReport
+
+travelReport.computeQuarterly()
+marketingReport.computeQuarterly()
+marketingReport.print()
+
+travelReport.computeAnnual()
+salesReport.computeQuarterly()
+salesReport.computeAnnual()
+
+travelReport.print()
+salesReport.print()
+marketingReport.computeAnnual() # bug: print() was done already
