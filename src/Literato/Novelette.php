@@ -1,6 +1,8 @@
 <?php
 
-require_once 'Book.php';
+namespace Literato;
+
+use Exception;
 
 class Novelette extends Book
 {

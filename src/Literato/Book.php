@@ -1,5 +1,9 @@
 <?php
 
+namespace Literato;
+
+use Exception;
+
 abstract class Book
 {
     private string $name;
@@ -75,7 +79,8 @@ abstract class Book
         return [
             strtoupper($this->getName()),
             $this->getAuthor()->getFullName(),
-            $this->getIsbn()
+            $this->getIsbn(),
+            substr($this->getText(), 0, 50),
         ];
     }
 
@@ -85,14 +90,6 @@ abstract class Book
     public function getText(): string
     {
         return $this->text;
-    }
-
-    /**
-     * @return string
-     */
-    public function getShortText(): string
-    {
-        return substr($this->getText(), 0, 150);
     }
 
     // Polymorphism example. Method will have different implementation in child classes.

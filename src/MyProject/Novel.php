@@ -1,12 +1,15 @@
 <?php
 
-require_once 'Book.php';
+namespace MyProject;
+
+use Exception;
+use Literato\Book;
 
 class Novel extends Book
 {
-    public const WORD_LENGTH = 1000;
-
+    public const WORD_LENGTH = 5;
     private string $synopsis = '';
+
 
     /**
      * {@inheritDoc}
@@ -21,11 +24,19 @@ class Novel extends Book
         return $fullInfo;
     }
 
+    /**
+     * @throws Exception
+     */
     public function setSynopsis(string $synopsis): void
     {
+        if (str_word_count($synopsis) < static::WORD_LENGTH) {
+            throw new Exception(
+                sprintf('The Novel synopsis must have at least %d words. Book: %s', static::WORD_LENGTH, $this->getName())
+            );
+        }
+
         $this->synopsis = $synopsis;
     }
-
     /**
      * @throws Exception
      */

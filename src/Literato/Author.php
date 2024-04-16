@@ -1,17 +1,16 @@
 <?php
 
+namespace Literato;
+
 class Author
 {
     private string $firstName = '';
     private string $lastName = '';
     private array $books; // author AGGREGATES his/her books
 
-    /**
-     * @return Book[]
-     */
-    public function getBooks(): array
+    public function getBooksCount(): int
     {
-        return $this->books;
+        return count($this->books);
     }
 
     public function addBook(Book $book): void
@@ -19,8 +18,6 @@ class Author
         $book->setAuthor($this); // AGGREGATION
         $this->books[] = $book;
     }
-
-
 
     /**
      * @return string
