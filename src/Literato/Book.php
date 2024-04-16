@@ -1,15 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Literato;
 
-use Exception;
+use Literato\Exceptions\BookValidationException;
 
 abstract class Book
 {
+    use PublisherAware;
+
     private string $name;
     private string $isbn;
     private string $text;
     private Author $author; // book AGGREGATES its author
+    /** @var Genre[] */
+    private array $genres;
 
     /**
      * @return string
@@ -24,6 +30,10 @@ abstract class Book
      */
     public function setName(string $name): void
     {
+        if (empty($name)) {
+            throw new BookValidationException('Book name must not be empty');
+        }
+
         $this->name = $name;
     }
 
@@ -61,7 +71,6 @@ abstract class Book
 
     /**
      * @param string $text
-     * @throws Exception
      */
     public function setText(string $text): void
     {
@@ -77,11 +86,18 @@ abstract class Book
     public function getFullInfo(): array
     {
         return [
-            strtoupper($this->getName()),
-            $this->getAuthor()->getFullName(),
-            $this->getIsbn(),
-            substr($this->getText(), 0, 50),
+             strtoupper($this->getName()) . " ({$this->getType()})",
+            'Author' => $this->getAuthor()->getFullName(),
+            'ISBN' => $this->getIsbn(),
+            'Genres' => implode(', ', array_column($this->genres, 'value')),
+            'Publisher' => $this->publisher->getName() . " ({$this->publisher->getAddress()})",
+            'ShortText' => substr($this->getText(), 0, 50),
         ];
+    }
+
+    public function getType(): string
+    {
+        return trim(str_replace(__NAMESPACE__, '', get_called_class()), '\\');
     }
 
     /**
@@ -94,4 +110,13 @@ abstract class Book
 
     // Polymorphism example. Method will have different implementation in child classes.
     abstract protected function validateText(string $text): void;
+
+    /**
+     * @param array $genres
+     */
+    public function setGenres(array $genres): void
+    {
+        array_walk($genres, fn($genre) => $genre instanceof Genre || throw new BookValidationException("Genre $genre is unknown"));
+        $this->genres = $genres;
+    }
 }

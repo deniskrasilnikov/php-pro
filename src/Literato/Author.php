@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Literato;
 
 class Author
 {
+    use PublisherAware;
+
     private string $firstName = '';
     private string $lastName = '';
     private array $books; // author AGGREGATES his/her books

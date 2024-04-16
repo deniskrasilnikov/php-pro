@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Literato;
 
 use Exception;
+use Literato\Exceptions\TextWordLengthException;
 
 class Novel extends Book
 {
@@ -18,7 +21,7 @@ class Novel extends Book
         // Polymorphism example. We override parent method adding extra functionality.
 
         $fullInfo = parent::getFullInfo();
-        $fullInfo[] = $this->synopsis;
+        $fullInfo['Synopsis'] = $this->synopsis;
 
         return $fullInfo;
     }
@@ -35,9 +38,7 @@ class Novel extends Book
     {
         // word length validation
         if (str_word_count($text) < static::WORD_LENGTH) {
-            throw new Exception(
-                sprintf('The Novel text must have at least %d words. Book: %s', static::WORD_LENGTH, $this->getName())
-            );
+            throw new TextWordLengthException($this, static::WORD_LENGTH);
         }
     }
 }

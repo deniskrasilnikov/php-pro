@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Literato;
 
 use Exception;
+use Literato\Exceptions\BookValidationException;
 
 class Novelette extends Book
 {
@@ -12,7 +15,7 @@ class Novelette extends Book
     protected function validateText(string $text): void
     {
         if ($text == '') {
-            throw new Exception('Novelette text must not be empty');
+            throw new BookValidationException('Novelette text must not be empty');
         }
     }
 }

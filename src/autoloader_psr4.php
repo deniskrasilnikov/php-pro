@@ -36,5 +36,5 @@
     }
 })->register([
     'Literato\\' => __DIR__ . DIRECTORY_SEPARATOR . 'Literato',
-    'MyProject\\' => __DIR__ . DIRECTORY_SEPARATOR . 'MyProject',
+    'Generators\\' => __DIR__ . DIRECTORY_SEPARATOR . 'Generators',
 ]);
