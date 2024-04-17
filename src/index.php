@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once 'autoloader_psr4.php';
+require dirname(__DIR__).'/vendor/autoload.php';
 
 use Literato\Author;
 use Literato\Book;
@@ -12,6 +12,9 @@ use Literato\Genre;
 use Literato\Novel;
 use Literato\Novelette;
 use Literato\Publisher;
+use Monolog\Level;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 function printBook(Book $book): void
 {
@@ -57,15 +60,9 @@ try {
     printBook($firstNovelette);
     printBook($latestNovel);
 
-    echo "\nBook genres:";
-    // iterate over Genre enum values
-    foreach (Genre::cases() as $case) {
-        echo ("\n* ".$case->value);
-    }
-
     echo "\n";
-} catch (TextWordLengthException $e) {
-    echo "We have caught more specific validation exception: " . $e;
-} catch (BookValidationException $e) {
-    echo "We have caught generic book validation exception: " . $e;
+} catch (TextWordLengthException|BookValidationException $e) {
+    $log = new Logger('default');
+    $log->pushHandler(new StreamHandler(__DIR__ . '/../log/errors.log', Level::Warning));
+    $log->error($e);
 }

@@ -1,17 +1,12 @@
-### Trait and Exceptions example
+# PHP Pro course demonstration project
+
+This project changes continuously according to the needs of course lessons.
+
+You can find the state of code for specific lesson in separate branches.
+
+Build and run using Docker:
 
 ```
-docker run -it --rm -v /home/dkrasilnikov/php-pro/src:/home/php-pro php -f /home/php-pro/index.php
-```
-
-### Generators example
-
-Run CSV export using array
-```
-docker run -it --rm -v /home/dkrasilnikov/php-pro/src:/home/php-pro php -f /home/php-pro/generators.php 0
-```
-
-Run CSV export using *generators*
-```
-docker run -it --rm -v /home/dkrasilnikov/php-pro/src:/home/php-pro php -f /home/php-pro/generators.php 1
+docker build -t php-pro .
+docker run -it --rm -v ${PWD}:/home/php-pro php-pro -f src/index.php
 ```
