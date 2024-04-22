@@ -34,6 +34,9 @@ try {
     $firstNovelette->setName('Unbelievable Adventure');
     $firstNovelette->setIsbn('978-3-16-148410-0');
     $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
+    $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
+    $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
+
     $firstNovelette->setGenres([Genre::Romance, Genre::Thriller]);
     $firstNovelette->setPublisher($publisher);
 
