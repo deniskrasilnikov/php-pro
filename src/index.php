@@ -15,11 +15,6 @@ use Monolog\Handler\StreamHandler;
 try {
     $publisher = new Publisher();
     $publisher->setName('Folio');
-    $publisher->setAddress('12 Main Street, Anytown, USA 6503');
-
-    $firstNovelette = new Novelette();
-    $firstNovelette->setName('Unbelievable Adventure');
-    $firstNovelette->setIsbn('978-3-16-148410-0');
     $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
     $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
     $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
