@@ -12,19 +12,6 @@ use Literato\Genre;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-function printBook(Book $book): void
-{
-    $fullInfo = $book->getFullInfo();
-    echo "\n" . implode(
-            "\n",
-            array_map(
-                fn($key, $value) => is_string($key) ? "[$key]\t$value" : $value,
-                array_keys($fullInfo),
-                array_values($fullInfo)
-            )
-        ) . "\n";
-}
-
 try {
     $publisher = new Publisher();
     $publisher->setName('Folio');
