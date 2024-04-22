@@ -9,10 +9,6 @@ use Literato\Book;
 use Literato\Exceptions\BookValidationException;
 use Literato\Exceptions\TextWordLengthException;
 use Literato\Genre;
-use Literato\Novel;
-use Literato\Novelette;
-use Literato\Publisher;
-use Monolog\Level;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
