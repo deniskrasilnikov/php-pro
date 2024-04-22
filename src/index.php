@@ -16,8 +16,6 @@ try {
     $publisher = new Publisher();
     $publisher->setName('Folio');
     $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
-    $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
-    $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
 
     $firstNovelette->setGenres([Genre::Romance, Genre::Thriller]);
     $firstNovelette->setPublisher($publisher);
