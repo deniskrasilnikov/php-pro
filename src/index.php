@@ -12,27 +12,9 @@ use Literato\Genre;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-function printBook(Book $book): void
-{
-    $fullInfo = $book->getFullInfo();
-    echo "\n" . implode(
-            "\n",
-            array_map(
-                fn($key, $value) => is_string($key) ? "[$key]\t$value" : $value,
-                array_keys($fullInfo),
-                array_values($fullInfo)
-            )
-        ) . "\n";
-}
-
 try {
     $publisher = new Publisher();
     $publisher->setName('Folio');
-    $publisher->setAddress('12 Main Street, Anytown, USA 6503');
-
-    $firstNovelette = new Novelette();
-    $firstNovelette->setName('Unbelievable Adventure');
-    $firstNovelette->setIsbn('978-3-16-148410-0');
     $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
     $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
     $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
