@@ -35,11 +35,10 @@ try {
     $author->addBook($latestNovel);
     $author->setPublisher($publisher);
 
+    echo "\n{$author->getFullName()} has written {$author->getBooksCount()} book(s):\n";
+    printBook($firstNovelette);
     printBook($latestNovel);
 
     echo "\n";
-} catch (TextWordLengthException|BookValidationException $e) {
-    $log = new Logger('default');
-    $log->pushHandler(new StreamHandler(__DIR__ . '/../log/errors.log', Level::Warning));
-    $log->error($e);
-}
+    :wq
+	    catch (TextWordLengthException|BookValidationException $e) {
