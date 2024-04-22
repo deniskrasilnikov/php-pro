@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Literato\Exceptions;
+namespace Literato\Entity\Exception;
 
-use Literato\Book;
+use Literato\Entity\Book;
 
 class TextWordLengthException extends BookValidationException
 {

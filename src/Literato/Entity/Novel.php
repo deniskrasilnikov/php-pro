@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Literato;
+namespace Literato\Entity;
 
 use Exception;
-use Literato\Exceptions\TextWordLengthException;
+use Literato\Entity\Exception\TextWordLengthException;
 
 class Novel extends Book
 {

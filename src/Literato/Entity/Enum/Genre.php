@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Literato;
+namespace Literato\Entity\Enum;
 
 enum Genre: string
 {

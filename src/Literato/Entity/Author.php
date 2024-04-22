@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Literato;
+namespace Literato\Entity;
 
 class Author
 {
-    use PublisherAware;
-
+    private int $id;
     private string $firstName = '';
     private string $lastName = '';
-    private array $books; // author AGGREGATES his/her books
+    /** @var Book[]  */
+    private array $books;
+    /** @var Publisher[]  */
+    private array $publishers = [];
 
     public function getBooksCount(): int
     {
@@ -19,7 +21,7 @@ class Author
 
     public function addBook(Book $book): void
     {
-        $book->setAuthor($this); // AGGREGATION
+        $book->setAuthor($this);
         $this->books[] = $book;
     }
 
@@ -45,5 +47,37 @@ class Author
     public function setLastName(string $lastName): void
     {
         $this->lastName = $lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 }

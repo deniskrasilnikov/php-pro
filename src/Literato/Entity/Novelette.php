@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Literato;
+namespace Literato\Entity;
 
 use Exception;
-use Literato\Exceptions\BookValidationException;
+use Literato\Entity\Exception\BookValidationException;
 
 class Novelette extends Book
 {
