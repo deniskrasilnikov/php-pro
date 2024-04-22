@@ -9,16 +9,20 @@ use Literato\Book;
 use Literato\Exceptions\BookValidationException;
 use Literato\Exceptions\TextWordLengthException;
 use Literato\Genre;
+use Literato\Novel;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 try {
     $publisher = new Publisher();
     $publisher->setName('Folio');
+
+    $firstNovelette= new Novel();
     $firstNovelette->setText('Lorem ipsum dolor sit amet, consectetuer adipiscing elit');
 
     $firstNovelette->setGenres([Genre::Romance, Genre::Thriller]);
     $firstNovelette->setPublisher($publisher);
+
 
     $latestNovel = new Novel();
     $latestNovel->setName('Beyond the Edge');
@@ -33,13 +37,8 @@ try {
     $author->setLastName('Eastwood');
     $author->addBook($firstNovelette);
     $author->addBook($latestNovel);
-    $author->setPublisher($publisher);
-
     printBook($latestNovel);
 
     echo "\n";
-} catch (TextWordLengthException|BookValidationException $e) {
-    $log = new Logger('default');
-    $log->pushHandler(new StreamHandler(__DIR__ . '/../log/errors.log', Level::Warning));
-    $log->error($e);
-}
+    :wq
+	    catch (TextWordLengthException|BookValidationException $e) {
