@@ -6,7 +6,8 @@ require dirname(__DIR__).'/vendor/autoload.php';
 
 use Literato\Author;
 use Literato\Book;
-
+use Literato\Exceptions\BookValidationException;
+use Literato\Exceptions\TextWordLengthException;
 use Literato\Genre;
 use Literato\Novel;
 use Literato\Novelette;
