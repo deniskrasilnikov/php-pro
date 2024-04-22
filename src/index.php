@@ -36,8 +36,6 @@ try {
     $author->setPublisher($publisher);
 
     echo "\n{$author->getFullName()} has written {$author->getBooksCount()} book(s):\n";
-    printBook($firstNovelette);
-    printBook($latestNovel);
 
     echo "\n";
     :wq
