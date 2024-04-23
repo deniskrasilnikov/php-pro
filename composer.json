@@ -1,0 +1,20 @@
+{
+  "name": "deniskrasilnikov/php-pro",
+  "description": "Demo project for Hillel PHP Pro course",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Denis Krasilnikov",
+      "email": "deniskrasilnikov86@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Literato\\": "src/Literato"
+    }
+  },
+  "require": {
+    "monolog/monolog": "^3.6"
+  }
+}
