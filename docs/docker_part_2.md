@@ -2,6 +2,8 @@
 
 Command examples used during lesson demonstrations.
 
+> **!** First checkout lesson with `git checkout lesson_8_docker_compose`
+
 ### Docker volumes
 ```
 # named

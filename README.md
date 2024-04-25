@@ -14,4 +14,6 @@ Run code inside PHP container `docker compose run --rm php -f src/index.php`
 Stop and remove all services `docker compose down`
 
 ### Lesson docs
-[Docker - Part 2. Docker Compose](docs/docker_part_2.md)
+* [Docker - Part 1](docs/docker_part_1.md)
+* [Docker - Part 2. Docker Compose](docs/docker_part_2.md)
+* [OOP - Part 3](docs/oop_part_3.md)
