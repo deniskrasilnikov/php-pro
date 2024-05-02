@@ -1,6 +1,7 @@
 {
   "name": "deniskrasilnikov/php-pro",
   "description": "Demo project for Hillel PHP Pro course",
+  "version": "0.1.0",
   "minimum-stability": "stable",
   "license": "MIT",
   "authors": [
@@ -15,6 +16,8 @@
     }
   },
   "require": {
-    "monolog/monolog": "^3.6"
+    "monolog/monolog": "^3.6",
+    "fakerphp/faker": "^1.23",
+    "symfony/console": "^7.0"
   }
 }

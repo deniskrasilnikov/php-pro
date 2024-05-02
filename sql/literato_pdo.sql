@@ -10,11 +10,12 @@ create table book
 (
     id        int unsigned auto_increment
         primary key,
-    name      varchar(50)                                                                              not null,
-    isbn      char(13)                                                                                 not null,
-    text      text                                                                                     null,
-    author_id int unsigned                                                                             not null,
-    genres    set ('Adventure', 'Science fiction', 'Thriller', 'Horror', 'Magical realism', 'Romance') null,
+    name      varchar(50)                                                                                              not null,
+    isbn10    char(13)                                                                                                 not null,
+    text      text                                                                                                     null,
+    author_id int unsigned                                                                                             not null,
+    genres    set ('Adventure', 'Science fiction', 'Thriller', 'Horror', 'Magical realism', 'Romance', 'Dark Fantasy') null,
+    type      set ('Novel', 'Novelette') default 'Novel'                                                               null,
     constraint book_ibfk_1
         foreign key (author_id) references author (id)
 );
@@ -44,4 +45,20 @@ create table author_publisher
 
 create index publisher_id
     on author_publisher (publisher_id);
+
+create table edition
+(
+    id                 int unsigned auto_increment
+        primary key,
+    book_id            int unsigned           null,
+    publisher_id       int unsigned           null,
+    price              decimal(5, 2) unsigned null,
+    author_reward_copy decimal(5, 2) unsigned null,
+    sold_copies_count  mediumint unsigned     null,
+    status             varchar(15)            null,
+    constraint edition_book_id_fk
+        foreign key (book_id) references book (id),
+    constraint edition_publisher_id_fk
+        foreign key (publisher_id) references publisher (id)
+);
 

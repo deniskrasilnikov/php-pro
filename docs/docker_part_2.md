@@ -24,7 +24,7 @@ docker run --rm -d -p 81:80 nginx
 ### Docker compose
 ```
 docker-compose up -d
-docker compose run php bash
+docker compose run --rm php bash
 docker-compose up -d --force-recreate db
 docker compose stop db
 docker compose rm db

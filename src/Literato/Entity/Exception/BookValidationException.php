@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Literato\Exceptions;
+namespace Literato\Entity\Exception;
 
 use RuntimeException;
 
