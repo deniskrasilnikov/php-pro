@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Literato\Entity;
 
+use Doctrine\ORM\Mapping\Entity;
 use Exception;
 use Literato\Entity\Exception\BookValidationException;
 
+#[Entity]
 class Novelette extends Book
 {
     /**
