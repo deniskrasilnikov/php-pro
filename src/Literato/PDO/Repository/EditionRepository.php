@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Literato\Repository;
+namespace Literato\PDO\Repository;
 
 use Literato\Entity\Edition;
 use PDO;

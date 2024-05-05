@@ -4,13 +4,14 @@ namespace Literato\Entity;
 
 use DateTime;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping\{Column, Entity, GeneratedValue, Id};
+use Doctrine\ORM\Mapping\{Column, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, Table};
 use Literato\Entity\Enum\EditionStatus;
 
 /**
  * Book edition by concrete publisher
  */
 #[Entity]
+#[Table(name: 'edition')]
 class Edition
 {
     use PublisherAware;
@@ -22,15 +23,33 @@ class Edition
     private int $id;
 
     public function __construct(
+        #[ManyToOne(targetEntity: Book::class)]
+        #[JoinColumn(name: 'book_id', referencedColumnName: 'id')]
         private readonly Book $book,
+
+        #[ManyToOne(targetEntity: Publisher::class)]
+        #[JoinColumn(name: 'publisher_id', referencedColumnName: 'id')]
         protected Publisher $publisher,
+
+        #[Column(name: 'published_at', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
         private readonly ?DateTime $publishedAt = null,
-        private readonly float $price = 0.0,
-        private readonly float $authorBaseReward = 0,
-        private readonly float $authorRewardPerCopy = 0,
+
+        #[Column(type: 'smallint')]
+        private readonly int $price = 0,
+
+        #[Column(name: 'author_reward_base', type: 'smallint')]
+        private readonly int $authorBaseReward = 0,
+
+        #[Column(name: 'author_reward_copy', type: 'smallint')]
+        private readonly int $authorRewardPerCopy = 0,
+
+        #[Column(name: 'sold_copies_count', type: 'integer')]
         private readonly int $soldCopiesCount = 0,
+
+        #[Column(length: 15)]
         private readonly EditionStatus $status = EditionStatus::InProgress,
     ) {
+        $this->initTimestampable();
     }
 
     public function getAuthorReward(): float
@@ -48,10 +67,10 @@ class Edition
             'Book' => $this->book->getName(),
             'ISBN' => $this->book->getIsbn10(),
             'Publisher' => $this->publisher->getName(),
-            'Status' => $this->status->value,
-            'Price' => $this->price,
-            'SoldCount' => $this->soldCopiesCount,
-            'AuthorReward' => $this->getAuthorReward(),
+            'Status' => $this->status->name,
+            'Price' => $this->price / 100,
+            'Sold Count' => $this->soldCopiesCount,
+            'Author Reward' => $this->getAuthorReward() / 100,
         ];
     }
 
@@ -72,9 +91,9 @@ class Edition
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function getPrice(): float
+    public function getPrice(): int
     {
         return $this->price;
     }
@@ -96,9 +115,9 @@ class Edition
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function getAuthorRewardPerCopy(): float
+    public function getAuthorRewardPerCopy(): int
     {
         return $this->authorRewardPerCopy;
     }

@@ -12,9 +12,10 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
-use Literato\Entity\Enum\EditionStatus;
+use Doctrine\ORM\Mapping\Table;
 
 #[Entity]
+#[Table(name: 'publisher')]
 class Publisher
 {
     #[Id]
@@ -28,9 +29,6 @@ class Publisher
     #[Column(length: 500)]
     private string $address;
 
-    /** @var Collection<int, Edition> */
-    private Collection $editions;
-
     /** @var Collection<int, Author> */
     #[ManyToMany(targetEntity: Author::class, mappedBy: 'publishers')]
     private Collection $authors;
@@ -38,7 +36,6 @@ class Publisher
     public function __construct()
     {
         $this->authors = new ArrayCollection();
-        $this->editions = new ArrayCollection();
     }
 
 
@@ -63,17 +60,6 @@ class Publisher
         return $this->address;
     }
 
-    public function publishBook(Book $book): void
-    {
-        $this->editions[] = new Edition(
-            $book,
-            $this,
-            authorBaseReward: 1000,
-            authorRewardPerCopy: 10.35,
-            status: EditionStatus::Published
-        );
-    }
-
     /**
      * @return int
      */
@@ -88,5 +74,13 @@ class Publisher
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAuthors(): Collection
+    {
+        return $this->authors;
     }
 }

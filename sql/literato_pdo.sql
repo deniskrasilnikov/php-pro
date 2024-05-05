@@ -16,6 +16,9 @@ create table book
     author_id int unsigned                                                                                             not null,
     genres    set ('Adventure', 'Science fiction', 'Thriller', 'Horror', 'Magical realism', 'Romance', 'Dark Fantasy') null,
     type      set ('Novel', 'Novelette') default 'Novel'                                                               null,
+    synopsis  varchar(200)                                                                                             null,
+    constraint book_isbn
+        unique (isbn10),
     constraint book_ibfk_1
         foreign key (author_id) references author (id)
 );
@@ -50,12 +53,16 @@ create table edition
 (
     id                 int unsigned auto_increment
         primary key,
-    book_id            int unsigned           not null,
-    publisher_id       int unsigned           not null,
-    price              decimal(5, 2) unsigned default 0,
-    author_reward_copy decimal(5, 2) unsigned default 0,
-    sold_copies_count  mediumint unsigned     default 0,
-    status             varchar(15)            not null,
+    book_id            int unsigned                                 not null,
+    publisher_id       int unsigned                                 not null,
+    price              int unsigned       default '0'               not null,
+    author_reward_base int unsigned       default '0'               not null,
+    author_reward_copy int unsigned       default '0'               not null,
+    sold_copies_count  mediumint unsigned default '0'               null,
+    status             varchar(15)                                  null,
+    published_at       timestamp                                    null,
+    created_at         timestamp          default CURRENT_TIMESTAMP not null,
+    updated_at         timestamp          default CURRENT_TIMESTAMP not null,
     constraint edition_book_id_fk
         foreign key (book_id) references book (id),
     constraint edition_publisher_id_fk

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Literato\Repository\Exception;
+namespace Literato\PDO\Repository\Exception;
 
 use LogicException;
 use Throwable;

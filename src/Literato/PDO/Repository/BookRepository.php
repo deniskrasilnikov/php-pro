@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Literato\Repository;
+namespace Literato\PDO\Repository;
 
 use Literato\Entity\Book;
 use Literato\Entity\Enum\Genre;
 use Literato\Entity\Novel;
 use Literato\Entity\Novelette;
-use Literato\Repository\Exception\EntityIdException;
+use Literato\PDO\Repository\Exception\EntityIdException;
 use PDO;
 
 readonly class BookRepository
