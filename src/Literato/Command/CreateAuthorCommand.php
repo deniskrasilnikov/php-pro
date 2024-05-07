@@ -2,6 +2,7 @@
 
 namespace Literato\Command;
 
+use Doctrine\ORM\Exception\ORMException;
 use Faker\Factory as FakerFactory;
 use Literato\Entity\Author;
 use Literato\Entity\Book;
@@ -10,8 +11,6 @@ use Literato\Entity\Exception\BookValidationException;
 use Literato\Entity\Exception\TextWordLengthException;
 use Literato\Entity\Novel;
 use Literato\Entity\Novelette;
-use Literato\Repository\AuthorRepository;
-use Literato\Repository\BookRepository;
 use Literato\ServiceFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -30,6 +29,9 @@ class CreateAuthorCommand extends Command
             ->addArgument('lastName', InputArgument::OPTIONAL, 'Author last name');
     }
 
+    /**
+     * @throws ORMException
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $services = new ServiceFactory();
@@ -41,8 +43,10 @@ class CreateAuthorCommand extends Command
             $author->setFirstName($input->getArgument('firstName') ?: $faker->firstName());
             $author->setLastName($input->getArgument('lastName') ?: $faker->lastName());
 
-            $authorRepository = new AuthorRepository($pdo = $services->createPDO());
-            $authorRepository->add($author);
+            // >> ORM
+            $entityManager = $services->createORMEntityManager();
+            $entityManager->persist($author);
+            // <<
 
             $styledOutput = new SymfonyStyle($input, $output);
             $styledOutput->writeln("Created author <info>{$author->getFullName()}</info>");
@@ -54,8 +58,9 @@ class CreateAuthorCommand extends Command
             $firstNovelette->setGenres([Genre::Romance, Genre::Thriller]);
             $author->addBook($firstNovelette);
 
-            $bookRepository = new BookRepository($pdo);
-            $bookRepository->add($firstNovelette);
+            // >> ORM
+            $entityManager->persist($firstNovelette);
+            // <<
 
             $latestNovel = new Novel();
             $latestNovel->setName($faker->text(20));
@@ -65,13 +70,17 @@ class CreateAuthorCommand extends Command
             $latestNovel->setSynopsis($faker->text(50));
             $author->addBook($latestNovel);
 
-            $bookRepository->add($latestNovel);
+            // >> ORM
+            $entityManager->persist($latestNovel);
+            $entityManager->flush(); // apply all changes to DB
+            // <<
 
             $output->writeln("Created {$author->getBooksCount()} book(s):");
             $this->printBook($firstNovelette, $styledOutput);
             $this->printBook($latestNovel, $styledOutput);
-        } catch (TextWordLengthException|BookValidationException $e) {
+        } catch (TextWordLengthException|BookValidationException|ORMException $e) {
             $services->createLogger()->error($e);
+            throw $e;
         }
 
         return Command::SUCCESS;

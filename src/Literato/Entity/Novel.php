@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Literato\Entity;
 
+use Doctrine\ORM\Mapping\Entity;
 use Exception;
 use Literato\Entity\Exception\TextWordLengthException;
 
+#[Entity]
 class Novel extends Book
 {
     public const WORD_LENGTH = 10;

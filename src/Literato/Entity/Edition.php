@@ -3,15 +3,23 @@
 namespace Literato\Entity;
 
 use DateTime;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\{Column, Entity, GeneratedValue, Id};
 use Literato\Entity\Enum\EditionStatus;
 
 /**
  * Book edition by concrete publisher
  */
+#[Entity]
 class Edition
 {
-    use Identity;
     use PublisherAware;
+    use Timestampable;
+
+    #[Id]
+    #[GeneratedValue]
+    #[Column(type: Types::INTEGER)]
+    private int $id;
 
     public function __construct(
         private readonly Book $book,
@@ -93,5 +101,21 @@ class Edition
     public function getAuthorRewardPerCopy(): float
     {
         return $this->authorRewardPerCopy;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 }

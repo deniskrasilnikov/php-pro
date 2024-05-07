@@ -4,19 +4,63 @@ declare(strict_types=1);
 
 namespace Literato\Entity;
 
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\{Column,
+    DiscriminatorColumn,
+    DiscriminatorMap,
+    Entity,
+    GeneratedValue,
+    Id,
+    InheritanceType,
+    JoinColumn,
+    ManyToOne,
+    Table};
 use Literato\Entity\Enum\Genre;
 use Literato\Entity\Exception\BookValidationException;
 
+#[Entity]
+#[Table(name: 'book')]
+#[InheritanceType('SINGLE_TABLE')]
+#[DiscriminatorColumn(name: 'type', type: 'string')]
+#[DiscriminatorMap(['Novel' => Novel::class, 'Novelette' => Novelette::class])]
 abstract class Book
 {
-    use Identity;
+    #[Id]
+    #[GeneratedValue]
+    #[Column(type: Types::INTEGER)]
+    private int $id;
 
+    #[Column(length: 150)]
     private string $name;
+
+    #[Column(length: 13)]
     private string $isbn10;
+
+    #[Column(type: 'text')]
     private string $text;
-    private Author $author; // book AGGREGATES its author
+
+    #[ManyToOne(targetEntity: Author::class, inversedBy: 'books')]
+    #[JoinColumn(name: 'author_id', referencedColumnName: 'id')]
+    private Author $author;
+
     /** @var Genre[] */
     private array $genres;
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     /**
      * @return string

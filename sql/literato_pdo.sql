@@ -50,12 +50,12 @@ create table edition
 (
     id                 int unsigned auto_increment
         primary key,
-    book_id            int unsigned           null,
-    publisher_id       int unsigned           null,
-    price              decimal(5, 2) unsigned null,
-    author_reward_copy decimal(5, 2) unsigned null,
-    sold_copies_count  mediumint unsigned     null,
-    status             varchar(15)            null,
+    book_id            int unsigned           not null,
+    publisher_id       int unsigned           not null,
+    price              decimal(5, 2) unsigned default 0,
+    author_reward_copy decimal(5, 2) unsigned default 0,
+    sold_copies_count  mediumint unsigned     default 0,
+    status             varchar(15)            not null,
     constraint edition_book_id_fk
         foreign key (book_id) references book (id),
     constraint edition_publisher_id_fk
