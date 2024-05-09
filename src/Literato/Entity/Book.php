@@ -44,7 +44,7 @@ abstract class Book
     private Author $author;
 
     /** @var Genre[] */
-    private array $genres;
+    private array $genres = [Genre::NONE];
 
     /**
      * @param int $id

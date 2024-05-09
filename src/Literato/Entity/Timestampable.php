@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace Literato\Entity;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
 
 trait Timestampable
 {
-    #[Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Column(name:'created_at', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     protected ?DateTimeInterface $createdAt = null;
 
-    /**
-     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
-     */
-    #[Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Column(name:'updated_at', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
     protected ?DateTimeInterface $updatedAt = null;
 
     private function initTimestampable(): void

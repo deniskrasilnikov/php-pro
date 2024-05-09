@@ -2,13 +2,12 @@
 
 namespace Literato\Command;
 
+use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\Exception\ORMException;
 use Faker\Factory as FakerFactory;
+use Literato\Entity\Book;
 use Literato\Entity\Edition;
 use Literato\Entity\Publisher;
-use Literato\Repository\BookRepository;
-use Literato\Repository\EditionRepository;
-use Literato\Repository\Exception\EntityIdException;
-use Literato\Repository\PublisherRepository;
 use Literato\ServiceFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -30,27 +29,27 @@ class CreateEditionCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $services = new ServiceFactory();
         $styledOutput = new SymfonyStyle($input, $output);
+        $services = new ServiceFactory();
 
         try {
-            $bookRepository = new BookRepository($pdo = $services->createPDO());
-            $book = $bookRepository->findByIsbn10($isbn10 = $input->getArgument('isbn10'));
+            $entityManager = $services->createORMEntityManager();
+            $bookRepository = $entityManager->getRepository(Book::class);
+            $book = $bookRepository->findOneBy(['isbn10' => $isbn10 = $input->getArgument('isbn10')]);
 
             if (!$book) {
-                $styledOutput->warning("Can not find book with ISBN $isbn10");
-                return Command::FAILURE;
+                throw new EntityNotFoundException("Can not find book with ISBN $isbn10");
             }
 
-            $publisherRepository = new PublisherRepository($pdo);
             if ($publisherName = $input->getOption('publisherName')) {
-                $publisher = $publisherRepository->findByName($publisherName);
+                $publisherRepository = $entityManager->getRepository(Publisher::class);
+                $publisher = $publisherRepository->findOneBy(['name' => $publisherName]);
             } else {
                 $faker = FakerFactory::create();
                 $publisher = new Publisher();
                 $publisher->setName($faker->name());
                 $publisher->setAddress($faker->address());
-                $publisherRepository->add($publisher);
+                $entityManager->persist($publisher);
             }
 
             if (!$publisher) {
@@ -61,12 +60,13 @@ class CreateEditionCommand extends Command
             $edition = new Edition(
                 $book,
                 $publisher,
-                price: rand(1000, 4000) / 100,
-                authorRewardPerCopy: 5.00,
-                soldCopiesCount: rand(1, 10),
+                price: rand(1000, 5000),
+                authorBaseReward: rand(0, 1000),
+                authorRewardPerCopy: rand(100, 1000),
+                soldCopiesCount: rand(1, 100),
             );
-            $editionRepository = new EditionRepository($pdo);
-            $editionRepository->add($edition);
+            $entityManager->persist($edition);
+            $entityManager->flush();
 
             $fullInfo = $edition->getFullInfo();
             call_user_func_array([$styledOutput, 'definitionList'],
@@ -75,9 +75,10 @@ class CreateEditionCommand extends Command
                     array_keys($fullInfo),
                     array_values($fullInfo)
                 ));
-
-        } catch (EntityIdException $e) {
+        } catch (ORMException $e) {
+            $styledOutput->warning($e->getMessage());
             $services->createLogger()->error($e);
+            return Command::FAILURE;
         }
 
         return Command::SUCCESS;

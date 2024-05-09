@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Literato\Entity;
 
+use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Exception;
 use Literato\Entity\Exception\TextWordLengthException;
@@ -13,7 +14,8 @@ class Novel extends Book
 {
     public const WORD_LENGTH = 10;
 
-    private string $synopsis = '';
+    #[Column(length: 200)]
+    private ?string $synopsis;
 
     /**
      * {@inheritDoc}

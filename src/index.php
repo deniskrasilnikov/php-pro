@@ -6,8 +6,10 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+use Literato\Command\BestSellersCommand;
 use Literato\Command\CreateAuthorCommand;
 use Literato\Command\CreateEditionCommand;
+use Literato\Command\ExportBooksCommand;
 use Literato\ServiceFactory;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -20,6 +22,8 @@ try {
     $application->addCommands([
         new CreateAuthorCommand(),
         new CreateEditionCommand(),
+        new BestSellersCommand(),
+        new ExportBooksCommand(),
     ]);
 
     $services = new ServiceFactory();
