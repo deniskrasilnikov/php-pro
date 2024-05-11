@@ -42,7 +42,7 @@ class ServiceFactory
         return $pdo;
     }
 
-    public function createORMEntityManager(): EntityManager
+    public function createDoctrineEntityManager(): EntityManager
     {
         $config = ORMSetup::createAttributeMetadataConfiguration(
             paths: [__DIR__],
