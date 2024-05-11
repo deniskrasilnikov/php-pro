@@ -27,7 +27,7 @@ try {
     ]);
 
     $services = new ServiceFactory();
-    ConsoleRunner::addCommands($application, new SingleManagerProvider($services->createORMEntityManager()));
+    ConsoleRunner::addCommands($application, new SingleManagerProvider($services->createDoctrineEntityManager()));
     $application->run(new ArgvInput(), $output);
 } catch (Exception $e) {
     $output->writeln($e->getMessage());

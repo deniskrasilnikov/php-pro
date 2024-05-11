@@ -24,7 +24,7 @@ class ExportBooksCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $services = new ServiceFactory();
-        $entityManager = $services->createORMEntityManager();
+        $entityManager = $services->createDoctrineEntityManager();
 
         $query = $entityManager
             ->getRepository(Book::class)

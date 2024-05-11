@@ -31,7 +31,7 @@ class BestSellersCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $services = new ServiceFactory();
-        $entityManager = $services->createORMEntityManager();
+        $entityManager = $services->createDoctrineEntityManager();
 
         $queryBuilder = $entityManager
             ->getRepository(Edition::class)

@@ -44,7 +44,7 @@ class CreateAuthorCommand extends Command
             $author->setLastName($input->getArgument('lastName') ?: $faker->lastName());
 
             // >> ORM
-            $entityManager = $services->createORMEntityManager();
+            $entityManager = $services->createDoctrineEntityManager();
             $entityManager->persist($author);
             // <<
 
