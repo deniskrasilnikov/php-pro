@@ -44,6 +44,7 @@ abstract class Book
     private Author $author;
 
     /** @var Genre[] */
+    #[Column(type: 'simple_array', enumType: Genre::class)]
     private array $genres = [Genre::NONE];
 
     /**
