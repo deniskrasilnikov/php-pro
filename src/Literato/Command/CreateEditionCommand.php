@@ -33,7 +33,7 @@ class CreateEditionCommand extends Command
         $services = new ServiceFactory();
 
         try {
-            $entityManager = $services->createORMEntityManager();
+            $entityManager = $services->createDoctrineEntityManager();
             $bookRepository = $entityManager->getRepository(Book::class);
             $book = $bookRepository->findOneBy(['isbn10' => $isbn10 = $input->getArgument('isbn10')]);
 

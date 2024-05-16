@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Literato\Command;
+namespace Eloquent\Command;
 
-use Literato\Entity\Edition;
-use Literato\ServiceFactory;
+use Eloquent\Model\Edition;
+use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'literato:best-sellers', description: 'Print best selling books of all times')]
+#[AsCommand(name: 'eloquent:best-sellers', description: 'Print best selling books of all times')]
 class BestSellersCommand extends Command
 {
     protected function configure(): void
@@ -30,34 +30,24 @@ class BestSellersCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $services = new ServiceFactory();
-        $entityManager = $services->createDoctrineEntityManager();
-
-        $queryBuilder = $entityManager
-            ->getRepository(Edition::class)
-            ->createQueryBuilder('e');
-
-        $queryBuilder->orderBy('e.soldCopiesCount', 'DESC');
+        $queryBuilder = Edition::query();
+        $queryBuilder->orderByDesc('sold_copies_count')
+            ->limit($input->getOption('count'));
 
         if ($publisherName = $input->getOption('publisherName')) {
-            $queryBuilder
-                ->join('e.publisher', 'p')
-                ->where('p.name = :name')
-                ->setParameter('name', $publisherName);
+            $queryBuilder->whereHas('publisher', function (Builder $builder) use ($publisherName) {
+                $builder->where('name', $publisherName);
+            });
         }
-
-        $bestSellerCount = (int)$input->getOption('count');
-        $query = $queryBuilder->getQuery()
-            ->setMaxResults($bestSellerCount);
 
         $styledOutput = new SymfonyStyle($input, $output);
 
-        foreach ($query->getResult() as $edition) {
+        foreach ($queryBuilder->get() as $edition) {
             /** @var Edition $edition */
             $this->printEdition($edition, $styledOutput);
         }
 
-        $styledOutput->info($query->getSQL()); // SQL
+        $styledOutput->info($queryBuilder->toRawSql()); // SQL
 
         return Command::SUCCESS;
     }
