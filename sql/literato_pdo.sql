@@ -14,7 +14,7 @@ create table book
     isbn10    char(13)                                                                                                 not null,
     text      text                                                                                                     null,
     author_id int unsigned                                                                                             not null,
-    genres    set ('Adventure', 'Science fiction', 'Thriller', 'Horror', 'Magical realism', 'Romance', 'Dark Fantasy') null,
+    genres    set ('Adventure', 'Science fiction', 'Thriller', 'Horror', 'Magical realism', 'Romance', 'Dark fantasy') null,
     type      set ('Novel', 'Novelette') default 'Novel'                                                               null,
     synopsis  varchar(200)                                                                                             null,
     constraint book_isbn
