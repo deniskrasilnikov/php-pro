@@ -1,17 +1,24 @@
-# PHP Pro course demonstration project
+# Демонстраційний проєкт курсу PHP Pro 
 
-This project changes continuously according to the needs of course lessons.
+Проєкт постійно змінюється відповідно до пройдених занять.
 
-You can find the state of code for specific lesson in separate branches.
+Ви можете знайти стан коду під конкретні заняття в відповідніх гілках.
 
-Build and run using Docker Compose `docker compose up -d`
+Збудувати та запустити проєкт (всі сервіси) `docker compose up -d`
 
-Enter inside PHP service `docker compose run --rm php bash`<br>
-Enter inside DB service `docker compose exec db bash`
+Зайти всередину PHP сервісу `docker compose exec php bash`<br>
+Зайти всередину NGINX сервісу `docker compose exec nginx bash`<br>
+Зайти всередину DB сервісу `docker compose exec db bash`
 
-Run code inside PHP container `docker compose run --rm php -f src/index.php`
+Доступ до веб-версії http://localhost
 
-Stop and remove all services `docker compose down`
+Запустити консольну команду всередині PHP сервісу:
+```
+docker compose exec php bash
+php src/console.php <command_name>
+```
+Зупинити всі сервіси `docker compose stop`<br>
+Зупинити та **видалити** всі сервіси (контейнери) `docker compose down`
 
 ### Lesson docs
 * [Docker - Part 1](docs/docker_part_1.md)
