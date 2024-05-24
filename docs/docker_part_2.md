@@ -1,8 +1,8 @@
 # Docker - Part 2
 
-Command examples used during lesson demonstrations.
+Приклади команд, використаних на занятті.
 
-> **!** First checkout lesson with `git checkout lesson_8_docker_compose`
+> **!** Спочатку переключіться на відповідну гілку `git checkout lesson_8_docker_compose`
 
 ### Docker volumes
 ```

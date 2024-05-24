@@ -1,10 +1,10 @@
 # OOP - Part 3
 
-Command examples used during lesson demonstration.
+Приклади команд, використаних на занятті.
 
-> **!** First checkout lesson with `git checkout lesson_5`
+> **!** Спочатку переключіться на відповідну гілку `git checkout lesson_5`
 
-### Trait and Exceptions
+### Trait та Exceptions
 
 ```
 docker run -it --rm -v ${PWD}/src:/home/php-pro php -f /home/php-pro/index.php
@@ -12,12 +12,12 @@ docker run -it --rm -v ${PWD}/src:/home/php-pro php -f /home/php-pro/index.php
 
 ### Generators
 
-Run CSV export using array
+Запустити CSV експорт без генераторів (дані експортуються як звичайний array)
 ```
 docker run -it --rm -v ${PWD}/src:/home/php-pro php -f /home/php-pro/generators.php 0
 ```
 
-Run CSV export using *generators*
+Запустити CSV експорт з використанням *генераторів*
 ```
 docker run -it --rm -v ${PWD}/src:/home/php-pro php -f /home/php-pro/generators.php 1
 ```

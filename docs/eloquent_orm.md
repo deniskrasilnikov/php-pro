@@ -2,7 +2,7 @@
 
 Команди з прикладами роботи з Eloquent ORM.
 
-> **!** First checkout lesson with `git checkout lesson_13_eloquent`
+> **!** Спочатку переключіться на відповідну гілку `git checkout lesson_13_eloquent`
 
 ### Створення та збереження моделей
 

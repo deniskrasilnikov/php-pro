@@ -1,8 +1,8 @@
 # Docker - Part 1
 
-Command examples used during lesson demonstration.
+Приклади команд, використаних на занятті.
 
-> **!** First checkout lesson with `git checkout lesson_2`
+> **!** Спочатку переключіться на відповідну гілку `git checkout lesson_2`
 
 ```
 docker run --name demo -d -i -t php

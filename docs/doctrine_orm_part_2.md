@@ -2,7 +2,7 @@
 
 Команди з прикладами роботи ORM.
 
-> **!** First checkout lesson with `git checkout lesson_12_doctrine_part2`
+> **!** Спочатку переключіться на відповідну гілку `git checkout lesson_12_doctrine_part2`
 
 ### Базові вибірки через Repository конкретної сутності
 

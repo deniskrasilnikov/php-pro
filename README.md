@@ -26,3 +26,4 @@ php src/console.php <command_name>
 * [OOP - Part 3](docs/oop_part_3.md)
 * [Doctrine ORM - Part 2](docs/doctrine_orm_part_2.md)
 * [Eloquent ORM](docs/eloquent_orm.md)
+* [Встановлення Symfony](docs/symfony_install.md)
