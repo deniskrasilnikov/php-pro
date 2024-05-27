@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Literato\Command;
+namespace App\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Literato\Entity\Book;
-use Literato\ServiceFactory;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,6 +15,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'literato:export-books', description: 'Export all books to CSV')]
 class ExportBooksCommand extends Command
 {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+    ) {
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
@@ -23,10 +29,7 @@ class ExportBooksCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $services = new ServiceFactory();
-        $entityManager = $services->createDoctrineEntityManager();
-
-        $query = $entityManager
+        $query = $this->entityManager
             ->getRepository(Book::class)
             ->createQueryBuilder('b')
             ->getQuery();
@@ -38,7 +41,7 @@ class ExportBooksCommand extends Command
         foreach ($query->toIterable() as $book) {
             /** @var Book $book */
             fputcsv($file, $book->getFullInfo());
-            $entityManager->detach($book);
+            $this->entityManager->detach($book);
         }
         $ormTimeEnd = microtime(true);
 

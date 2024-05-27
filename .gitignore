@@ -2,8 +2,5 @@
 .env
 vendor/
 
-log/*
-!log/.gitkeep
-
 export/*
 !export/.gitkeep

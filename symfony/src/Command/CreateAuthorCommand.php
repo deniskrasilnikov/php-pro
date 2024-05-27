@@ -1,15 +1,17 @@
 <?php
 
-namespace Eloquent\Command;
+namespace App\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory as FakerFactory;
-use Eloquent\Model\Author;
-use Eloquent\Model\Book;
-use Eloquent\Model\Novel;
-use Eloquent\Model\Novelette;
+use Literato\Entity\Author;
+use Literato\Entity\Book;
 use Literato\Entity\Enum\Genre;
 use Literato\Entity\Exception\BookValidationException;
-use Literato\ServiceFactory;
+use Literato\Entity\Exception\TextWordLengthException;
+use Literato\Entity\Novel;
+use Literato\Entity\Novelette;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,9 +19,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'eloquent:create-author', description: 'Create new author with 2 books')]
+#[AsCommand(name: 'literato:create-author')]
 class CreateAuthorCommand extends Command
 {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly LoggerInterface $logger
+    ) {
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
@@ -33,36 +42,45 @@ class CreateAuthorCommand extends Command
             $faker = FakerFactory::create();
 
             $author = new Author();
-            $author->first_name = $input->getArgument('firstName') ?: $faker->firstName();
-            $author->last_name = $input->getArgument('lastName') ?: $faker->lastName();
-            $author->save();
+            $author->setFirstName($input->getArgument('firstName') ?: $faker->firstName());
+            $author->setLastName($input->getArgument('lastName') ?: $faker->lastName());
+
+            // >> ORM
+            $this->entityManager->persist($author);
+            // <<
 
             $styledOutput = new SymfonyStyle($input, $output);
             $styledOutput->writeln("Created author <info>{$author->getFullName()}</info>");
 
             $firstNovelette = new Novelette();
-            $firstNovelette->type = 'Novelette';
-            $firstNovelette->name = $faker->text(20);
-            $firstNovelette->isbn10 = $faker->isbn10();
-            $firstNovelette->text = $faker->text();
-            $firstNovelette->genres = [Genre::Romance, Genre::Thriller];
-            $author->novelettes()->save($firstNovelette);
+            $firstNovelette->setName($faker->text(20));
+            $firstNovelette->setIsbn10($faker->isbn10());
+            $firstNovelette->setText($faker->text());
+            $firstNovelette->setGenres([Genre::Romance, Genre::Thriller]);
+            $author->addBook($firstNovelette);
+
+            // >> ORM
+            $this->entityManager->persist($firstNovelette);
+            // <<
 
             $latestNovel = new Novel();
-            $latestNovel->type = 'Novel';
-            $latestNovel->name = $faker->text(20);
-            $latestNovel->isbn10 = $faker->isbn10();
-            $latestNovel->text = $faker->text();
-            $latestNovel->genres = [Genre::SciFi, Genre::MagicalRealism];
-            $latestNovel->synopsis = $faker->text(50);
-            $author->novels()->save($latestNovel);
+            $latestNovel->setName($faker->text(20));
+            $latestNovel->setIsbn10($faker->isbn10());
+            $latestNovel->setText($faker->text());
+            $latestNovel->setGenres([Genre::SciFi, Genre::MagicalRealism]);
+            $latestNovel->setSynopsis($faker->text(50));
+            $author->addBook($latestNovel);
+
+            // >> ORM
+            $this->entityManager->persist($latestNovel);
+            $this->entityManager->flush(); // apply all changes to DB
+            // <<
 
             $output->writeln("Created {$author->getBooksCount()} book(s):");
             $this->printBook($firstNovelette, $styledOutput);
             $this->printBook($latestNovel, $styledOutput);
-        } catch (BookValidationException $e) {
-            $services = new ServiceFactory();
-            $services->createLogger()->error($e);
+        } catch (TextWordLengthException|BookValidationException $e) {
+            $this->logger->error($e);
             throw $e;
         }
 

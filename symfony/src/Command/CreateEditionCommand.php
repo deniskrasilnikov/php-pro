@@ -1,14 +1,15 @@
 <?php
 
-namespace Literato\Command;
+namespace App\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Exception\ORMException;
 use Faker\Factory as FakerFactory;
 use Literato\Entity\Book;
 use Literato\Entity\Edition;
 use Literato\Entity\Publisher;
-use Literato\ServiceFactory;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,6 +21,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'literato:create-edition')]
 class CreateEditionCommand extends Command
 {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly LoggerInterface $logger
+    ) {
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
@@ -30,11 +38,9 @@ class CreateEditionCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $styledOutput = new SymfonyStyle($input, $output);
-        $services = new ServiceFactory();
 
         try {
-            $entityManager = $services->createDoctrineEntityManager();
-            $bookRepository = $entityManager->getRepository(Book::class);
+            $bookRepository = $this->entityManager->getRepository(Book::class);
             $book = $bookRepository->findOneBy(['isbn10' => $isbn10 = $input->getArgument('isbn10')]);
 
             if (!$book) {
@@ -42,14 +48,14 @@ class CreateEditionCommand extends Command
             }
 
             if ($publisherName = $input->getOption('publisherName')) {
-                $publisherRepository = $entityManager->getRepository(Publisher::class);
+                $publisherRepository = $this->entityManager->getRepository(Publisher::class);
                 $publisher = $publisherRepository->findOneBy(['name' => $publisherName]);
             } else {
                 $faker = FakerFactory::create();
                 $publisher = new Publisher();
                 $publisher->setName($faker->name());
                 $publisher->setAddress($faker->address());
-                $entityManager->persist($publisher);
+                $this->entityManager->persist($publisher);
             }
 
             if (!$publisher) {
@@ -65,8 +71,8 @@ class CreateEditionCommand extends Command
                 authorRewardPerCopy: rand(100, 1000),
                 soldCopiesCount: rand(1, 100),
             );
-            $entityManager->persist($edition);
-            $entityManager->flush();
+            $this->entityManager->persist($edition);
+            $this->entityManager->flush();
 
             $fullInfo = $edition->getFullInfo();
             call_user_func_array([$styledOutput, 'definitionList'],
@@ -77,7 +83,7 @@ class CreateEditionCommand extends Command
                 ));
         } catch (ORMException $e) {
             $styledOutput->warning($e->getMessage());
-            $services->createLogger()->error($e);
+            $this->logger->error($e);
             return Command::FAILURE;
         }
 

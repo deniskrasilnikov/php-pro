@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Literato\Command;
+namespace App\Command;
 
 use Literato\Entity\Edition;
-use Literato\ServiceFactory;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,6 +16,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'literato:best-sellers', description: 'Print best selling books of all times')]
 class BestSellersCommand extends Command
 {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+    ) {
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
@@ -30,10 +36,7 @@ class BestSellersCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $services = new ServiceFactory();
-        $entityManager = $services->createDoctrineEntityManager();
-
-        $queryBuilder = $entityManager
+        $queryBuilder = $this->entityManager
             ->getRepository(Edition::class)
             ->createQueryBuilder('e');
 
