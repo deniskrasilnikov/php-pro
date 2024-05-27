@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Literato\Entity;
 
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
 

@@ -5,14 +5,16 @@ namespace Literato\Entity;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\{Column, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, Table};
+use JsonSerializable;
 use Literato\Entity\Enum\EditionStatus;
+use Literato\Repository\EditionRepository;
 
 /**
  * Book edition by concrete publisher
  */
-#[Entity]
+#[Entity(repositoryClass: EditionRepository::class)]
 #[Table(name: 'edition')]
-class Edition
+class Edition implements JsonSerializable
 {
     use PublisherAware;
     use Timestampable;
@@ -136,5 +138,10 @@ class Edition
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->getFullInfo();
     }
 }
