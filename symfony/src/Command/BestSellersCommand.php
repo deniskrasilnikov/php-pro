@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use Literato\Entity\Edition;
-use Doctrine\ORM\EntityManagerInterface;
+use Literato\Repository\EditionRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class BestSellersCommand extends Command
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private readonly EditionRepository $editionRepository,
     ) {
         parent::__construct();
     }
@@ -36,31 +36,15 @@ class BestSellersCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $queryBuilder = $this->entityManager
-            ->getRepository(Edition::class)
-            ->createQueryBuilder('e');
-
-        $queryBuilder->orderBy('e.soldCopiesCount', 'DESC');
-
-        if ($publisherName = $input->getOption('publisherName')) {
-            $queryBuilder
-                ->join('e.publisher', 'p')
-                ->where('p.name = :name')
-                ->setParameter('name', $publisherName);
-        }
-
-        $bestSellerCount = (int)$input->getOption('count');
-        $query = $queryBuilder->getQuery()
-            ->setMaxResults($bestSellerCount);
-
+        $bestSellers = $this->editionRepository->findBestSellers(
+            (int)$input->getOption('count'),
+            $input->getOption('publisherName')
+        );
         $styledOutput = new SymfonyStyle($input, $output);
 
-        foreach ($query->getResult() as $edition) {
-            /** @var Edition $edition */
+        foreach ($bestSellers as $edition) {
             $this->printEdition($edition, $styledOutput);
         }
-
-        $styledOutput->info($query->getSQL()); // SQL
 
         return Command::SUCCESS;
     }

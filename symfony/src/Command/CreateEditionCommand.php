@@ -5,7 +5,7 @@ namespace App\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Exception\ORMException;
-use Faker\Factory as FakerFactory;
+use Faker\Generator;
 use Literato\Entity\Book;
 use Literato\Entity\Edition;
 use Literato\Entity\Publisher;
@@ -23,7 +23,8 @@ class CreateEditionCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly Generator $faker,
     ) {
         parent::__construct();
     }
@@ -51,10 +52,9 @@ class CreateEditionCommand extends Command
                 $publisherRepository = $this->entityManager->getRepository(Publisher::class);
                 $publisher = $publisherRepository->findOneBy(['name' => $publisherName]);
             } else {
-                $faker = FakerFactory::create();
                 $publisher = new Publisher();
-                $publisher->setName($faker->name());
-                $publisher->setAddress($faker->address());
+                $publisher->setName($this->faker->name());
+                $publisher->setAddress($this->faker->address());
                 $this->entityManager->persist($publisher);
             }
 
