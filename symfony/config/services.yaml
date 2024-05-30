@@ -22,3 +22,5 @@ services:
 
     Literato\:
         resource: '../src/Literato/'
+        exclude:
+            - '../src/Literato/Entity/'

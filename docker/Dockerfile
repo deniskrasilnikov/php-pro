@@ -42,4 +42,7 @@ RUN if $XDEBUG_ENABLED; then pecl install xdebug \
     && echo "xdebug.max_nesting_level=1000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     ; fi
 
+# Expands the rights for www-data user
+RUN usermod -u 1000 www-data
+
 WORKDIR /home/php-pro
