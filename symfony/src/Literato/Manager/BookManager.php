@@ -10,11 +10,15 @@ use Literato\Entity\Author;
 use Literato\Entity\Enum\Genre;
 use Literato\Entity\Novel;
 use Literato\Entity\Novelette;
+use Psr\Log\LoggerInterface;
 
 readonly class BookManager
 {
-    public function __construct(private EntityManagerInterface $entityManager, private Generator $faker)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private LoggerInterface $logger,
+        private Generator $faker
+    ) {
     }
 
     public function createNovelette(Author $author): Novelette
@@ -27,6 +31,11 @@ readonly class BookManager
         $author->addBook($book);
         $this->entityManager->persist($book);
         $this->entityManager->flush();
+
+        $this->logger->debug(
+            "Created novelette {$book->getName()}",
+            ['isbn10' => $book->getIsbn10(), 'author' => $author->getFullName()]
+        );
 
         return $book;
     }
@@ -42,6 +51,11 @@ readonly class BookManager
         $author->addBook($book);
         $this->entityManager->persist($book);
         $this->entityManager->flush();
+
+        $this->logger->debug(
+            "Created novel {$book->getName()}",
+            ['isbn10' => $book->getIsbn10(), 'author' => $author->getFullName()]
+        );
 
         return $book;
     }
