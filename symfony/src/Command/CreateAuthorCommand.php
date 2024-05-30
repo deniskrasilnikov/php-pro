@@ -3,14 +3,12 @@
 namespace App\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Faker\Factory as FakerFactory;
+use Faker\Generator;
 use Literato\Entity\Author;
 use Literato\Entity\Book;
-use Literato\Entity\Enum\Genre;
 use Literato\Entity\Exception\BookValidationException;
 use Literato\Entity\Exception\TextWordLengthException;
-use Literato\Entity\Novel;
-use Literato\Entity\Novelette;
+use Literato\Manager\BookManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -24,7 +22,9 @@ class CreateAuthorCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly BookManager $bookManager,
+        private readonly Generator $faker,
     ) {
         parent::__construct();
     }
@@ -39,42 +39,18 @@ class CreateAuthorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-            $faker = FakerFactory::create();
-
             $author = new Author();
-            $author->setFirstName($input->getArgument('firstName') ?: $faker->firstName());
-            $author->setLastName($input->getArgument('lastName') ?: $faker->lastName());
+            $author->setFirstName($input->getArgument('firstName') ?: $this->faker->firstName());
+            $author->setLastName($input->getArgument('lastName') ?: $this->faker->lastName());
 
-            // >> ORM
             $this->entityManager->persist($author);
-            // <<
+            $this->entityManager->flush();
 
             $styledOutput = new SymfonyStyle($input, $output);
             $styledOutput->writeln("Created author <info>{$author->getFullName()}</info>");
 
-            $firstNovelette = new Novelette();
-            $firstNovelette->setName($faker->text(20));
-            $firstNovelette->setIsbn10($faker->isbn10());
-            $firstNovelette->setText($faker->text());
-            $firstNovelette->setGenres([Genre::Romance, Genre::Thriller]);
-            $author->addBook($firstNovelette);
-
-            // >> ORM
-            $this->entityManager->persist($firstNovelette);
-            // <<
-
-            $latestNovel = new Novel();
-            $latestNovel->setName($faker->text(20));
-            $latestNovel->setIsbn10($faker->isbn10());
-            $latestNovel->setText($faker->text());
-            $latestNovel->setGenres([Genre::SciFi, Genre::MagicalRealism]);
-            $latestNovel->setSynopsis($faker->text(50));
-            $author->addBook($latestNovel);
-
-            // >> ORM
-            $this->entityManager->persist($latestNovel);
-            $this->entityManager->flush(); // apply all changes to DB
-            // <<
+            $firstNovelette = $this->bookManager->createNovelette($author);
+            $latestNovel = $this->bookManager->createNovel($author);
 
             $output->writeln("Created {$author->getBooksCount()} book(s):");
             $this->printBook($firstNovelette, $styledOutput);
