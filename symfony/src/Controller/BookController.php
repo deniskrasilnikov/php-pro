@@ -6,8 +6,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Literato\Entity\Author;
 use Literato\Entity\Book;
 use Literato\Manager\BookManager;
+use Literato\Service\PrinterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,6 +26,15 @@ class BookController extends AbstractController
         }
 
         return new JsonResponse($book->getFullInfo());
+    }
+
+    /** Print book with given book id */
+    #[Route('/book/{id}/printable', name: 'app_book_print')]
+    public function print(PrinterInterface $printer, Book $book, Request $request): Response
+    {
+        $printer->print($book, $request->get('format'));
+
+        return new Response();
     }
 
     #[Route('/book/{firstName}/{lastName}', name: 'app_book_create')]

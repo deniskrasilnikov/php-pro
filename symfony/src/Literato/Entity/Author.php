@@ -75,22 +75,6 @@ class Author
     }
 
     /**
-     * @return string
-     */
-    public function getFirstName(): string
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName(): string
-    {
-        return $this->lastName;
-    }
-
-    /**
      * @return int
      */
     public function getId(): int

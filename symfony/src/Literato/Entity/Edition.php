@@ -8,13 +8,14 @@ use Doctrine\ORM\Mapping\{Column, Entity, GeneratedValue, Id, JoinColumn, ManyTo
 use JsonSerializable;
 use Literato\Entity\Enum\EditionStatus;
 use Literato\Repository\EditionRepository;
+use Literato\Service\PrintableInterface;
 
 /**
  * Book edition by concrete publisher
  */
 #[Entity(repositoryClass: EditionRepository::class)]
 #[Table(name: 'edition')]
-class Edition implements JsonSerializable
+class Edition implements JsonSerializable, PrintableInterface
 {
     use PublisherAware;
     use Timestampable;
@@ -77,51 +78,11 @@ class Edition implements JsonSerializable
     }
 
     /**
-     * @return Book
-     */
-    public function getBook(): Book
-    {
-        return $this->book;
-    }
-
-    /**
-     * @return Publisher
-     */
-    public function getPublisher(): Publisher
-    {
-        return $this->publisher;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPrice(): int
-    {
-        return $this->price;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSoldCopiesCount(): int
-    {
-        return $this->soldCopiesCount;
-    }
-
-    /**
      * @return EditionStatus
      */
     public function getStatus(): EditionStatus
     {
         return $this->status;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAuthorRewardPerCopy(): int
-    {
-        return $this->authorRewardPerCopy;
     }
 
     /**
@@ -143,5 +104,10 @@ class Edition implements JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->getFullInfo();
+    }
+
+    public function getPrintData(): string
+    {
+        return implode("\n", $this->getFullInfo());
     }
 }

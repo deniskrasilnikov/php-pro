@@ -14,16 +14,19 @@ use Doctrine\ORM\Mapping\{Column,
     InheritanceType,
     JoinColumn,
     ManyToOne,
-    Table};
+    Table
+};
+use JsonSerializable;
 use Literato\Entity\Enum\Genre;
 use Literato\Entity\Exception\BookValidationException;
+use Literato\Service\PrintableInterface;
 
 #[Entity]
 #[Table(name: 'book')]
 #[InheritanceType('SINGLE_TABLE')]
 #[DiscriminatorColumn(name: 'type', type: 'string')]
 #[DiscriminatorMap(['Novel' => Novel::class, 'Novelette' => Novelette::class])]
-abstract class Book
+abstract class Book implements BookInterface, PrintableInterface, JsonSerializable
 {
     #[Id]
     #[GeneratedValue]
@@ -169,11 +172,13 @@ abstract class Book
         $this->genres = $genres;
     }
 
-    /**
-     * @return array
-     */
-    public function getGenres(): array
+    public function getPrintData(): string
     {
-        return $this->genres;
+        return $this->text;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->getFullInfo();
     }
 }
