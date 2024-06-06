@@ -55,11 +55,6 @@ class Publisher
         $this->address = $address;
     }
 
-    public function getAddress(): string
-    {
-        return $this->address;
-    }
-
     /**
      * @return int
      */
@@ -74,13 +69,5 @@ class Publisher
     public function setId(int $id): void
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getAuthors(): Collection
-    {
-        return $this->authors;
     }
 }
