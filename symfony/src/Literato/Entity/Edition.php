@@ -110,4 +110,9 @@ class Edition implements JsonSerializable, PrintableInterface
     {
         return implode("\n", $this->getFullInfo());
     }
+
+    public function getBook(): Book
+    {
+        return $this->book;
+    }
 }

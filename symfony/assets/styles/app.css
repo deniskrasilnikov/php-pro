@@ -1,3 +1,73 @@
 body {
-    background-color: skyblue;
+    background-color: #e5e5e5;
+    color: #333;
+    font-family: Verdana, sans-serif;
+    font-size: .9em;
+}
+
+.content {
+    margin: 0 .7em;
+}
+
+.book-menu {
+    background: #191818;
+}
+
+.book-menu a:hover,
+.book-menu a:focus {
+    background: #333;
+}
+
+.book-menu a {
+    color: #999;
+}
+
+a.book-menu-action {
+    background: #0078e7;
+    color: #ddd;
+    padding: .5em 1em;
+    text-decoration: none;
+}
+
+.book-label {
+    width: 8em;
+    display: inline-block;
+    font-weight: bolder;
+}
+
+.book-page-nav {
+    margin: 0 0 2em;
+}
+
+.book-info {
+    display: flex;
+    margin: 1em 0 0;
+}
+
+.book-image {
+    margin-right: .8em;
+}
+
+.book-name {
+    font-size: 1.4rem;
+    margin: 5px 0;
+}
+
+.book-author {
+    font-size: 1.06rem;
+    margin: 5px 0 15px;
+}
+
+.book-actions {
+    padding: .6em 0 1em;
+    border-bottom: 1px solid #d3d9df;
+}
+
+a { color: blue }
+
+.flash-success {
+    padding: 7px 10px;
+    margin: 0 0 10px;
+    background: #4f805d;
+    color: whitesmoke;
 }
