@@ -19,9 +19,10 @@ use Doctrine\ORM\Mapping\{Column,
 use JsonSerializable;
 use Literato\Entity\Enum\Genre;
 use Literato\Entity\Exception\BookValidationException;
+use Literato\Repository\BookRepository;
 use Literato\Service\PrintableInterface;
 
-#[Entity]
+#[Entity(repositoryClass: BookRepository::class)]
 #[Table(name: 'book')]
 #[InheritanceType('SINGLE_TABLE')]
 #[DiscriminatorColumn(name: 'type', type: 'string')]
@@ -180,5 +181,10 @@ abstract class Book implements BookInterface, PrintableInterface, JsonSerializab
     public function jsonSerialize(): array
     {
         return $this->getFullInfo();
+    }
+
+    public function getGenres(): array
+    {
+        return $this->genres;
     }
 }

@@ -35,6 +35,11 @@ class Novel extends Book
         $this->synopsis = $synopsis;
     }
 
+    public function getSynopsis(): ?string
+    {
+        return $this->synopsis;
+    }
+
     /**
      * @throws Exception
      */

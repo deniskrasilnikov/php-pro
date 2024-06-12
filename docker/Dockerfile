@@ -16,12 +16,15 @@ FROM php:8.3-fpm as php-dev
 
 # Installs extra libraries
 RUN apt-get update && apt-get install -y \
+    zlib1g-dev \
+    libpng-dev \
     git \
     zip \
     unzip
 
 # Installs PHP extensions
 RUN docker-php-ext-install \
+    gd \
     pdo_mysql \
     opcache
 

@@ -29,7 +29,7 @@ class Author
     private Collection $books;
 
     /** @var Collection<int, Publisher> */
-    #[ManyToMany(targetEntity: Publisher::class, inversedBy: 'author')]
+    #[ManyToMany(targetEntity: Publisher::class, inversedBy: 'authors')]
     #[JoinTable(name: 'author_publisher')]
     private Collection $publishers;
 
