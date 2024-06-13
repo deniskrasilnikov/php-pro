@@ -6,6 +6,7 @@ namespace Literato\Service;
 
 use Exception;
 
+/** Сервіс-клас що генерує рандомну картинку заданого розміру, в форматі PNG */
 final class RandomImage
 {
     private const ARC_STYLES = [

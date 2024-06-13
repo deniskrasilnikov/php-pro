@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace App\Controller;
-
 use Exception;
 use Literato\Service\RandomImage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ImageController extends AbstractController
 {
+    # екшен генерації випадкової картинки заданого розміру
     #[Route('/random-image', name: 'app_random_image')]
     public function index(
         RandomImage $image,

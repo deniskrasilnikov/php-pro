@@ -9,6 +9,7 @@
         <div class="book-info pure-u-1-5">
             <div class="book-image">
                 <a href="{{ path('app_crud_book_show', {'id': edition.book.id }) }}">
+                    {# для картинок книг рендеримо веб-шлях на спеціальний контролер екшен, що генерує картинку на льоту #}
                     <img src="{{ path('app_random_image') }}?width=60&height=90&{{ random(0, 100) }}"
                          alt="{{ edition.book.name }}">
                 </a>

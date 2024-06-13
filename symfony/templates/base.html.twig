@@ -22,6 +22,16 @@
         <li class="pure-menu-item">
             <a href="{{ path('app_crud_book_index') }}" class="pure-menu-link">Books</a>
         </li>
+        <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+            <a href="#" class="pure-menu-link">Add book</a>
+            <ul class="pure-menu-children">
+                {% for bookType in book_types() %}
+                <li class="pure-menu-item">
+                    <a href="{{ path('app_crud_book_new', {bookType: bookType}) }}" class="pure-menu-link">{{ bookType }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
         {% block navigation %}{% endblock %}
     </ul>
 </div>

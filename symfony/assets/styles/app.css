@@ -22,13 +22,6 @@ body {
     color: #999;
 }
 
-a.book-menu-action {
-    background: #0078e7;
-    color: #ddd;
-    padding: .5em 1em;
-    text-decoration: none;
-}
-
 .book-label {
     width: 8em;
     display: inline-block;
@@ -70,4 +63,29 @@ a { color: blue }
     margin: 0 0 10px;
     background: #4f805d;
     color: whitesmoke;
+}
+
+
+.pure-form ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8em;
+    color: indianred;
+}
+
+.pure-form {
+    margin: 0 1em;
+}
+
+.pure-form label {
+    margin-top: .6em;
+}
+
+.pure-checkbox {
+    font-size: .9em;
+}
+
+.choice-checkboxes {
+    margin: .7em .4em 1em;
 }

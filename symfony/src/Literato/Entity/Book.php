@@ -17,16 +17,18 @@ use Doctrine\ORM\Mapping\{Column,
     Table
 };
 use JsonSerializable;
+use Literato\Entity\Enum\BookType;
 use Literato\Entity\Enum\Genre;
 use Literato\Entity\Exception\BookValidationException;
 use Literato\Repository\BookRepository;
 use Literato\Service\PrintableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Entity(repositoryClass: BookRepository::class)]
 #[Table(name: 'book')]
 #[InheritanceType('SINGLE_TABLE')]
 #[DiscriminatorColumn(name: 'type', type: 'string')]
-#[DiscriminatorMap(['Novel' => Novel::class, 'Novelette' => Novelette::class])]
+#[DiscriminatorMap(BookType::ENTITY_MAP)]
 abstract class Book implements BookInterface, PrintableInterface, JsonSerializable
 {
     #[Id]
@@ -35,13 +37,16 @@ abstract class Book implements BookInterface, PrintableInterface, JsonSerializab
     private int $id;
 
     #[Column(length: 150)]
+    #[Assert\Length(min: 5, minMessage: 'Name must be at least {{ limit }} characters long',
+    )]
     private string $name;
 
     #[Column(length: 13)]
+    #[Assert\Isbn(type: Assert\Isbn::ISBN_10,)]
     private string $isbn10;
 
     #[Column(type: 'text')]
-    private string $text;
+    protected string $text;
 
     #[ManyToOne(targetEntity: Author::class, inversedBy: 'books')]
     #[JoinColumn(name: 'author_id', referencedColumnName: 'id')]
@@ -49,7 +54,7 @@ abstract class Book implements BookInterface, PrintableInterface, JsonSerializab
 
     /** @var Genre[] */
     #[Column(type: 'simple_array', enumType: Genre::class)]
-    private array $genres = [Genre::NONE];
+    private array $genres = [];
 
     /**
      * @param int $id
@@ -124,10 +129,8 @@ abstract class Book implements BookInterface, PrintableInterface, JsonSerializab
      */
     public function setText(string $text): void
     {
-        $this->validateText($text);
         $this->text = $text;
     }
-
 
     /**
      * Get book name, author name, ISBN and other info as array items (strings)
@@ -147,7 +150,7 @@ abstract class Book implements BookInterface, PrintableInterface, JsonSerializab
 
     public function getType(): string
     {
-        return trim(str_replace(__NAMESPACE__, '', get_called_class()), '\\');
+        return array_flip(BookType::ENTITY_MAP)[get_called_class()];
     }
 
     /**
@@ -159,7 +162,7 @@ abstract class Book implements BookInterface, PrintableInterface, JsonSerializab
     }
 
     // Polymorphism example. Method will have different implementation in child classes.
-    abstract protected function validateText(string $text): void;
+    abstract public function validateText(): bool;
 
     /**
      * @param array $genres

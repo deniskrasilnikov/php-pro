@@ -7,7 +7,7 @@ namespace Literato\Entity;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Exception;
-use Literato\Entity\Exception\TextWordLengthException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Entity]
 class Novel extends Book
@@ -16,6 +16,9 @@ class Novel extends Book
 
     #[Column(length: 200)]
     private ?string $synopsis;
+
+    #[Assert\Expression("this.validateText()", message: 'Novel text must have at least ' . self::WORD_LENGTH . ' words',)]
+    protected string $text;
 
     /**
      * {@inheritDoc}
@@ -43,11 +46,8 @@ class Novel extends Book
     /**
      * @throws Exception
      */
-    protected function validateText(string $text): void
+    public function validateText(): bool
     {
-        // word length validation
-        if (str_word_count($text) < static::WORD_LENGTH) {
-            throw new TextWordLengthException($this, static::WORD_LENGTH);
-        }
+        return str_word_count($this->text) >= static::WORD_LENGTH;
     }
 }
