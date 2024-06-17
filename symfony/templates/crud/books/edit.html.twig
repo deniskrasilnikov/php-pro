@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Edit book</h1>
+    <h1>Edit {{ book.type }}</h1>
 
-    {% include 'crud/books/_form.html.twig' %}
+    {{ include('crud/books/_form.html.twig', { form: form }) }}
 {% endblock %}
 
 

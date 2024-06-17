@@ -6,14 +6,23 @@ namespace App\Twig;
 
 use Biblys\Isbn\Isbn;
 use Exception;
+use Literato\Entity\Enum\BookType;
 use Psr\Log\LoggerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
     public function __construct(private readonly LoggerInterface $logger)
     {
+    }
+
+    public function getFunctions(): array
+    {
+        return [
+            new TwigFunction('book_types', [$this, 'getBookTypes'])
+        ];
     }
 
     public function getFilters(): array
@@ -23,6 +32,11 @@ class AppExtension extends AbstractExtension
             new TwigFilter('cents', [$this, 'formatCents']),
             new TwigFilter('isbn10', [$this, 'isbn10']),
         ];
+    }
+
+    public function getBookTypes(): array
+    {
+        return array_column(BookType::cases(), 'value');
     }
 
     public function formatPrice($number, $decimals = 0, $decPoint = '.', $thousandsSep = ','): string
@@ -42,7 +56,7 @@ class AppExtension extends AbstractExtension
             return Isbn::convertToIsbn10($isbn);
         } catch (Exception $e) {
             $this->logger->error("Can't convert ISBN $isbn: " . $e->getMessage());
-            return $isbn ;
+            return $isbn;
         }
     }
 }

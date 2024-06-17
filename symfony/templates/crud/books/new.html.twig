@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Create book</h1>
+    <h1>Add {{ form.vars.value.type }}</h1>
 
-    {% include 'crud/books/_form.html.twig' %}
+        {% include 'crud/books/_form.html.twig' %}
+
 {% endblock %}
 
 

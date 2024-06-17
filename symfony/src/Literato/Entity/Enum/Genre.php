@@ -6,7 +6,6 @@ namespace Literato\Entity\Enum;
 
 enum Genre: string
 {
-    case NONE = 'n/a';
     case SciFi = 'Science fiction';
     case Adventure = 'Adventure';
     case Thriller = 'Thriller';

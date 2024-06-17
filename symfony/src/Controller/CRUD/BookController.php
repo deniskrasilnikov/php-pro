@@ -4,21 +4,27 @@ declare(strict_types=1);
 
 namespace App\Controller\CRUD;
 
+use App\Form\BookType as BookForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Literato\Entity\Book;
+use Literato\Entity\Enum\BookType;
 use Literato\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 
+use Symfony\Component\Routing\Requirement\Requirement;
+
 use const FILTER_VALIDATE_REGEXP;
 
 /** CRUD-контролер для книг */
+#[Route('/books')]
 class BookController extends AbstractController
 {
     /** Переглянути усі книги (з пагінацією) */
-    #[Route('/books', name: 'app_crud_book_index', methods: 'GET')]
+    #[Route('/', name: 'app_crud_book_index', methods: 'GET')]
     public function index(
         BookRepository $books,
         #[MapQueryParameter(
@@ -36,14 +42,14 @@ class BookController extends AbstractController
     }
 
     /** Переглянути книгу */
-    #[Route('/books/{id}', name: 'app_crud_book_show', requirements: ['id' => '\d+'], methods: 'GET')]
+    #[Route('/{id}', name: 'app_crud_book_show', requirements: ['id' => Requirement::POSITIVE_INT], methods: 'GET')]
     public function show(Book $book): Response
     {
         return $this->render('crud/books/show.html.twig', ['book' => $book]);
     }
 
     /** Видалити книгу */
-    #[Route('/books/{id}/_delete')]
+    #[Route('/{id}/_delete', requirements: ['id' => Requirement::POSITIVE_INT])]
     public function delete(Book $book, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($book);
@@ -51,20 +57,47 @@ class BookController extends AbstractController
 
         $this->addFlash('success', "Book {$book->getName()} deleted successfully");
 
-        return $this->redirectToRoute('app_crud_book_index');
+        return $this->redirectToRoute('app_crud_book_index', [], Response::HTTP_SEE_OTHER);
     }
 
     /** Створити книгу */
-    #[Route('/books/new', name: 'app_crud_book_new')]
-    public function new(): Response
-    {
-        return $this->render('crud/books/new.html.twig');
+    #[Route('/new/{bookType}', name: 'app_crud_book_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, BookType $bookType): Response {
+
+        $form = $this->createForm(BookForm::class, $bookType->entity());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($book = $form->getData());
+            $entityManager->flush();
+
+            $this->addFlash('success', "Book {$book->getName()} created successfully");
+
+            return $this->redirectToRoute('app_crud_book_show', ['id' => $book->getId()]);
+        }
+
+        return $this->render('crud/books/new.html.twig', [
+            'form' => $form
+        ]);
     }
 
     /** Редагувати книгу */
-    #[Route('/books/{id}/_update', name: 'app_crud_book_update')]
-    public function update(Book $book): Response
+    #[Route('/{id}/_update', name: 'app_crud_book_update', requirements: ['id' => Requirement::POSITIVE_INT],
+        methods: ['GET', 'POST'])]
+    public function update(Book $book, Request $request, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('crud/books/edit.html.twig', ['book' => $book]);
+        $form = $this->createForm(BookForm::class, $book);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', "Book {$book->getName()} updated successfully");
+
+            return $this->redirectToRoute('app_crud_book_show', ['id' => $book->getId()]);
+        }
+
+        return $this->render('crud/books/edit.html.twig', ['book' => $book, 'form' => $form]);
     }
 }
