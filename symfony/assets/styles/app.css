@@ -1,8 +1,6 @@
 body {
     background-color: #e5e5e5;
     color: #333;
-    font-family: Verdana, sans-serif;
-    font-size: .9em;
 }
 
 .content {
@@ -88,4 +86,23 @@ a { color: blue }
 
 .choice-checkboxes {
     margin: .7em .4em 1em;
+}
+
+.login {
+    margin: 15em auto 0;
+    max-width: fit-content;
+}
+
+.login .or-signup {
+    margin: 1em 1em 0;
+    font-size: 0.9em;
+}
+
+.login h2 {
+    margin: 0 .5em 1.5em;
+}
+
+.login-error {
+    margin: 0 1em;
+    color: firebrick;
 }

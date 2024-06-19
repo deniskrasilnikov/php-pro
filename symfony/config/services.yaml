@@ -18,6 +18,7 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Literato/'
+            - '../src/Entity/'
             - '../src/Kernel.php'
 
     Literato\:
