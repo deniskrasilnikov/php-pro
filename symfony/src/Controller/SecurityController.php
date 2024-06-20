@@ -18,6 +18,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     #[Route('/signup', name: 'app_register')]
+    // обробка форми реєстрації
     public function register(
         UserPasswordHasherInterface $passwordHasher,
         Request $request,
@@ -31,7 +32,12 @@ class SecurityController extends AbstractController
             $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
             $entityManager->persist($user);
             $entityManager->flush();
+
+            // одразу робимо аутентифікацію новоствореного користувача з повертанням Response:
             return $security->login($user);
+            // АБО можна переадресувати на login сторінку з повідомленням пройти аутентифікацію явно:
+            //$this->addFlash('success', 'Account created successfully. Please log in');
+            //return $this->redirectToRoute('app_login');
         }
 
         return $this->render('security/signup.html.twig', [
@@ -40,8 +46,10 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
-    {
+    // рендерінг форми для аутентифікації
+    public function login(
+        AuthenticationUtils $authenticationUtils
+    ): Response {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
