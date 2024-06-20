@@ -16,25 +16,30 @@
 </head>
 <body>
 
-<div class="pure-menu pure-menu-horizontal book-menu">
-    <a href="{{ path('app_home_index') }}" class="pure-menu-link pure-menu-heading">&#8962; Literato</a>
-    <ul class="pure-menu-list">
-        <li class="pure-menu-item">
-            <a href="{{ path('app_crud_book_index') }}" class="pure-menu-link">Books</a>
-        </li>
-        <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-            <a href="#" class="pure-menu-link">Add book</a>
-            <ul class="pure-menu-children">
-                {% for bookType in book_types() %}
-                <li class="pure-menu-item">
-                    <a href="{{ path('app_crud_book_new', {bookType: bookType}) }}" class="pure-menu-link">{{ bookType }}</a>
-                </li>
-                {% endfor %}
-            </ul>
-        </li>
-        {% block navigation %}{% endblock %}
-    </ul>
-</div>
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <div class="pure-menu pure-menu-horizontal book-menu">
+        <a href="{{ path('app_home_index') }}" class="pure-menu-heading pure-menu-link">&#8962; Literato</a>
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item">
+                <a href="{{ path('app_crud_book_index') }}" class="pure-menu-link">Books</a>
+            </li>
+            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                <a href="#" class="pure-menu-link">Add book</a>
+                <ul class="pure-menu-children">
+                    {% for bookType in book_types() %}
+                        <li class="pure-menu-item">
+                            <a href="{{ path('app_crud_book_new', {bookType: bookType}) }}"
+                               class="pure-menu-link">{{ bookType }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li class="pure-menu-item">
+                <a href="/logout" class="pure-menu-link">Log out</a>
+            </li>
+        </ul>
+    </div>
+{% endif %}
 
 {% for label, messages in app.flashes() %}
     {% for message in messages %}
