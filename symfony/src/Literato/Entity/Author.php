@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\{Column, Entity, GeneratedValue, Id, JoinTable, ManyToMany, OneToMany, Table};
+use Symfony\Component\Serializer\Attribute as Serialize;
 
 #[Entity]
 #[Table(name: 'author')]
@@ -16,16 +17,20 @@ class Author
     #[Id]
     #[GeneratedValue]
     #[Column(type: Types::INTEGER)]
+    #[Serialize\Groups(['author_item'])]
     private int $id;
 
     #[Column(name: 'first_name', length: 50)]
+    #[Serialize\Groups(['author_item'])]
     private string $firstName = '';
 
     #[Column(name: 'last_name', length: 50)]
+    #[Serialize\Groups(['author_item'])]
     private string $lastName = '';
 
     /** @var Collection<int, Book> */
     #[OneToMany(targetEntity: Book::class, mappedBy: 'author', cascade: ["persist"] )]
+    #[Serialize\Groups(['author_books'])]
     private Collection $books;
 
     /** @var Collection<int, Publisher> */
@@ -88,5 +93,29 @@ class Author
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
     }
 }

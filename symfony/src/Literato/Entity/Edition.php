@@ -5,17 +5,17 @@ namespace Literato\Entity;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\{Column, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, Table};
-use JsonSerializable;
 use Literato\Entity\Enum\EditionStatus;
 use Literato\Repository\EditionRepository;
 use Literato\Service\PrintableInterface;
+use Symfony\Component\Serializer\Attribute as Serialize;
 
 /**
  * Book edition by concrete publisher
  */
 #[Entity(repositoryClass: EditionRepository::class)]
 #[Table(name: 'edition')]
-class Edition implements JsonSerializable, PrintableInterface
+class Edition implements  PrintableInterface
 {
     use PublisherAware;
     use Timestampable;
@@ -23,11 +23,14 @@ class Edition implements JsonSerializable, PrintableInterface
     #[Id]
     #[GeneratedValue]
     #[Column(type: Types::INTEGER)]
+    #[Serialize\Groups(['edition_list', 'edition_item'])]
     private int $id;
 
     public function __construct(
         #[ManyToOne(targetEntity: Book::class)]
         #[JoinColumn(name: 'book_id', referencedColumnName: 'id')]
+        #[Serialize\Groups(['edition_list', 'edition_item'])]
+        #[Serialize\MaxDepth(1)]
         private readonly Book $book,
 
         #[ManyToOne(targetEntity: Publisher::class)]
@@ -35,22 +38,26 @@ class Edition implements JsonSerializable, PrintableInterface
         protected Publisher $publisher,
 
         #[Column(name: 'published_at', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+        #[Serialize\Groups(['edition_item'])]
         private readonly ?DateTime $publishedAt = null,
 
         #[Column(type: 'smallint')]
-        private readonly int $price = 0,
+        #[Serialize\Groups(['edition_list'])]
+        private int $price = 0,
 
         #[Column(name: 'author_reward_base', type: 'smallint')]
-        private readonly int $authorBaseReward = 0,
+        #[Serialize\Groups(['edition_list'])]
+        private int $authorBaseReward = 0,
 
         #[Column(name: 'author_reward_copy', type: 'smallint')]
-        private readonly int $authorRewardPerCopy = 0,
+        private int $authorRewardPerCopy = 0,
 
         #[Column(name: 'sold_copies_count', type: 'integer')]
-        private readonly int $soldCopiesCount = 0,
+        private int $soldCopiesCount = 0,
 
         #[Column(length: 15)]
-        private readonly EditionStatus $status = EditionStatus::InProgress,
+        #[Serialize\Groups(['edition_item'])]
+        private EditionStatus $status = EditionStatus::InProgress,
     ) {
         $this->initTimestampable();
     }
@@ -101,11 +108,6 @@ class Edition implements JsonSerializable, PrintableInterface
         $this->id = $id;
     }
 
-    public function jsonSerialize(): array
-    {
-        return $this->getFullInfo();
-    }
-
     public function getPrintData(): string
     {
         return implode("\n", $this->getFullInfo());
@@ -114,5 +116,78 @@ class Edition implements JsonSerializable, PrintableInterface
     public function getBook(): Book
     {
         return $this->book;
+    }
+
+    /**
+     * @param int $authorBaseReward
+     */
+    public function setAuthorBaseReward(int $authorBaseReward): void
+    {
+        $this->authorBaseReward = $authorBaseReward;
+    }
+
+    /**
+     * @param int $authorRewardPerCopy
+     */
+    public function setAuthorRewardPerCopy(int $authorRewardPerCopy): void
+    {
+        $this->authorRewardPerCopy = $authorRewardPerCopy;
+    }
+
+    /**
+     * @param int $soldCopiesCount
+     */
+    public function setSoldCopiesCount(int $soldCopiesCount): void
+    {
+        $this->soldCopiesCount = $soldCopiesCount;
+    }
+
+    /**
+     * @param EditionStatus $status
+     */
+    public function setStatus(EditionStatus $status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @param int $price
+     */
+    public function setPrice(int $price): void
+    {
+        $this->price = $price;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getSoldCopiesCount(): int
+    {
+        return $this->soldCopiesCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAuthorBaseReward(): int
+    {
+        return $this->authorBaseReward;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getPublishedAt(): ?DateTime
+    {
+        return $this->publishedAt;
     }
 }

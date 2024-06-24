@@ -23,26 +23,30 @@ use Literato\Entity\Exception\BookValidationException;
 use Literato\Repository\BookRepository;
 use Literato\Service\PrintableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Attribute as Serialize;
 
 #[Entity(repositoryClass: BookRepository::class)]
 #[Table(name: 'book')]
 #[InheritanceType('SINGLE_TABLE')]
 #[DiscriminatorColumn(name: 'type', type: 'string')]
 #[DiscriminatorMap(BookType::ENTITY_MAP)]
-abstract class Book implements BookInterface, PrintableInterface, JsonSerializable
+abstract class Book implements BookInterface, PrintableInterface
 {
     #[Id]
     #[GeneratedValue]
     #[Column(type: Types::INTEGER)]
+    #[Serialize\Groups(['book_list', 'book_item'])]
     private int $id;
 
     #[Column(length: 150)]
     #[Assert\Length(min: 5, minMessage: 'Name must be at least {{ limit }} characters long',
     )]
+    #[Serialize\Groups(['book_list'])]
     private string $name;
 
     #[Column(length: 13)]
     #[Assert\Isbn(type: Assert\Isbn::ISBN_10,)]
+    #[Serialize\Groups(['book_list', 'book_item'])]
     private string $isbn10;
 
     #[Column(type: 'text')]
@@ -50,6 +54,8 @@ abstract class Book implements BookInterface, PrintableInterface, JsonSerializab
 
     #[ManyToOne(targetEntity: Author::class, inversedBy: 'books')]
     #[JoinColumn(name: 'author_id', referencedColumnName: 'id')]
+    #[Serialize\Groups(['author_item'])]
+    #[Serialize\MaxDepth(1)]
     private Author $author;
 
     /** @var Genre[] */
@@ -179,11 +185,6 @@ abstract class Book implements BookInterface, PrintableInterface, JsonSerializab
     public function getPrintData(): string
     {
         return $this->text;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->getFullInfo();
     }
 
     public function getGenres(): array
