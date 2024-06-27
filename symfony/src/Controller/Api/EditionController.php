@@ -13,6 +13,7 @@ use Literato\Repository\EditionRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,6 +23,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class EditionController extends AbstractController
 {
     #[Route('/', methods: ['GET'], format: 'json')]
+    #[Cache(maxage: 60, public: true, mustRevalidate: true)] # застосовуємо HTTP кешування на 60 секунд
     public function list(
         EditionRepository $editionRepository,
         SerializerInterface $serializer,
