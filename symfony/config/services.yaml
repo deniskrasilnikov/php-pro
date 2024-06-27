@@ -25,6 +25,7 @@ services:
         resource: '../src/Literato/'
         exclude:
             - '../src/Literato/Entity/'
+            - '../src/Literato/DTO/'
 
     Faker\Generator:
         factory: ['Faker\Factory', 'create']

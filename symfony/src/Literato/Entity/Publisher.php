@@ -70,4 +70,12 @@ class Publisher
     {
         $this->id = $id;
     }
+
+    /**
+     * @return string
+     */
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
 }
