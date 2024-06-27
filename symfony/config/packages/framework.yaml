@@ -5,7 +5,7 @@ framework:
 
     # Note that the session will be started ONLY if you read or write from it.
     session: true
-
+#    http_cache: true # включити HTTP кешування
     serializer:
         default_context:
             circular_reference_limit : 2
