@@ -45,6 +45,9 @@ class Edition implements  PrintableInterface
         #[Serialize\Groups(['edition_list'])]
         private int $price = 0,
 
+        #[Column(type: 'smallint')]
+        private readonly int $authorPenalty = 0,
+
         #[Column(name: 'author_reward_base', type: 'smallint')]
         #[Serialize\Groups(['edition_list'])]
         private int $authorBaseReward = 0,
