@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Literato\Entity;
 
+use Literato\Service\Printing\PrintableInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\{Column,
     DiscriminatorColumn,
@@ -14,16 +15,13 @@ use Doctrine\ORM\Mapping\{Column,
     InheritanceType,
     JoinColumn,
     ManyToOne,
-    Table
-};
-use JsonSerializable;
+    Table};
 use Literato\Entity\Enum\BookType;
 use Literato\Entity\Enum\Genre;
 use Literato\Entity\Exception\BookValidationException;
 use Literato\Repository\BookRepository;
-use Literato\Service\PrintableInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Attribute as Serialize;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Entity(repositoryClass: BookRepository::class)]
 #[Table(name: 'book')]

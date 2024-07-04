@@ -29,3 +29,11 @@ services:
 
     Faker\Generator:
         factory: ['Faker\Factory', 'create']
+
+    Literato\Service\Payments\PaymentGatewayInterface: '@payment_gateway.cryptomus'
+
+    payment_gateway.base:
+        class: Literato\Service\Payments\PaymentGateway
+
+    payment_gateway.cryptomus:
+        class: Literato\Service\Payments\CryptomusPaymentGateway

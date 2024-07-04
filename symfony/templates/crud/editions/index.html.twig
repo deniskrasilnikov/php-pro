@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+ {% block body %}
+     <h1>Edition list</h1>
+
+     <div class="book-page-nav">
+         {% if app.request.get('page') > 1 %}
+             <a href="{{ path('app_crud_edition_index', {'page': 1 }) }}">&lArr; First</a>
+             | <a href="{{ path('app_crud_edition_index', {'page': app.request.get('page') - 1 }) }}">&larr;
+             Previous</a> |
+         {% endif %}
+
+         {% if editions|length %}
+             <a href="{{ path('app_crud_edition_index', {'page': app.request.get('page', 1) + 1 }) }}">Next &rarr;</a>
+         {% endif %}
+     </div>
+
+
+     {% if editions|length %}
+         {# імпортування макросу book_info #}
+         {% from "crud/books/_macros.html.twig" import book_info %}
+
+         {% for edition in editions %}
+             {# використання макросу book_info - рендерінг інформації про книгу #}
+             {{ book_info(edition.book) }}
+
+             <div class="edition-actions">
+                 <a class="pure-button" href="{{ path('app_edition_print', {'id': edition.id }) }}">Print</a>
+                 <a class="pure-button" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'advanced' }) }}">Print Advanced</a>
+                 <a class="pure-button" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'html' }) }}">Print HTML</a>
+                 <a class="pure-button" href="{{ path('app_edition_payment', {'id': edition.id }) }}">Buy</a>
+             </div>
+         {% endfor %}
+
+     {% else %}
+         No editions found
+     {% endif %}
+
+ {% endblock %}
