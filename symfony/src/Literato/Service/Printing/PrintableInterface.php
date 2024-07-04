@@ -1,6 +1,6 @@
 <?php
 
-namespace Literato\Service;
+namespace Literato\Service\Printing;
 
 interface PrintableInterface
 {

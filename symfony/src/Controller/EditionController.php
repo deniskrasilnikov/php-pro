@@ -2,14 +2,16 @@
 
 namespace App\Controller;
 
+use Literato\Service\Printing\PrinterFactory;
 use Literato\Entity\Edition;
 use Literato\Repository\EditionRepository;
-use Literato\Service\PrinterInterface;
+use Literato\Service\Payments\PaymentGatewayInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class EditionController extends AbstractController
 {
@@ -21,10 +23,22 @@ class EditionController extends AbstractController
 
     /** Print edition with given id */
     #[Route('/edition/{id}/printable', name: 'app_edition_print')]
-    public function print(PrinterInterface $printer, Edition $edition, Request $request): Response
+    public function print(PrinterFactory $printerFactory, Edition $edition, Request $request): Response
     {
-        $printer->print($edition, $request->get('format'));
+        $printer = $printerFactory->createPrinter($request->get('format'));
 
-        return new Response();
+        return new Response($printer->print($edition));
+    }
+
+    #[Route('/edition/{id}/payment', name: 'app_edition_payment')]
+    public function payment(
+        Edition $edition,
+        #[CurrentUser] $user,
+        PaymentGatewayInterface $paymentGateway
+    ): JsonResponse {
+
+        $status = $paymentGateway->makePayment($edition, $user);
+
+        return new JsonResponse($status);
     }
 }
