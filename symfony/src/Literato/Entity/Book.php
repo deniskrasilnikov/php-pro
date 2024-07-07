@@ -58,6 +58,7 @@ abstract class Book implements BookInterface, PrintableInterface
 
     /** @var Genre[] */
     #[Column(type: 'simple_array', enumType: Genre::class)]
+    #[Serialize\Groups(['book_list', 'book_item'])]
     private array $genres = [];
 
     /**
