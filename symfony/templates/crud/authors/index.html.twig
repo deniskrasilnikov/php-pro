@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+ {% block body %}
+     <h1>Author list</h1>
+
+     <div id="authors-from-json"></div>
+     <hr>
+
+     <div data-controller="authors" data-authors-url-value="{{ path('app_crud_author_page') }}" id="authors">
+     </div>
+
+     <script defer src="{{ asset('authors.js') }}"></script>
+
+ {% endblock %}

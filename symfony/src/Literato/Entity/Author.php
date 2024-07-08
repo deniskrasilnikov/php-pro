@@ -17,15 +17,15 @@ class Author
     #[Id]
     #[GeneratedValue]
     #[Column(type: Types::INTEGER)]
-    #[Serialize\Groups(['author_item'])]
+    #[Serialize\Groups(['author_item', 'author_list'])]
     private int $id;
 
     #[Column(name: 'first_name', length: 50)]
-    #[Serialize\Groups(['author_item'])]
+    #[Serialize\Groups(['author_item', 'author_list'])]
     private string $firstName = '';
 
     #[Column(name: 'last_name', length: 50)]
-    #[Serialize\Groups(['author_item'])]
+    #[Serialize\Groups(['author_item', 'author_list'])]
     private string $lastName = '';
 
     /** @var Collection<int, Book> */
