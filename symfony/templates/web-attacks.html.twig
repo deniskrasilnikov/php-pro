@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {# ################################################################################# #}
+    <h1>SQL-ін'єкція</h1>
+
+    <form class="pure-form">
+        <label>Book name
+            <input type="text" id="bookName" required="required" placeholder="Search by book name part">
+        </label>
+        <button id="bookSearch" type="button" class="pure-button pure-button-primary">Search</button>
+    </form>
+
+    <div id="bookList"></div>
+
+    <script>
+        document.getElementById('bookSearch').onclick = function () {
+            fetch('{{ path('app_webattacks_search') }}?bookName=' + encodeURIComponent(document.getElementById('bookName').value))
+                .then(response => response.text())
+                .then(function (html) {
+                    document.getElementById('bookList').innerHTML = html;
+                });
+        }
+    </script>
+
+    {# ################################################################################# #}
+    <h1>XSS</h1>
+
+    {{ form_start(xssVulnerableForm, { 'attr' : { 'class': 'pure-form pure-form-stacked' } }) }}
+    {{ form_row(xssVulnerableForm.name) }}
+    {{ form_row(xssVulnerableForm.age) }}
+    <button type="submit" class="pure-button pure-button-primary">Create</button>
+    {{ form_end(xssVulnerableForm) }}
+
+    <div class="book-info">
+        {% for client in clients %}
+            {{ client|join(' ')|raw }}<br>
+        {% endfor %}
+    </div>
+
+
+    {# ################################################################################# #}
+    <h1>CSRF</h1>
+
+    <h2>1. Вразливість через GET метод. Посилання у вигляді картинки чи "кнопки" на сайті зловмисника чи в email</h2>
+
+    <a href="{{ path('app_webattacks_sendmoney', { 'amount': 1000, 'address': 'VV98G7uYkj8CENKC5Ka' }) }}">
+        <img src="{{ path('app_random_image') }}?height=60" alt="XSS exploit">
+    </a>
+
+    <h2>2. Вразливість через POST метод</h2>
+    <h3>Форма переказу грошей на нашому сайті</h3>
+    {{ form_start(csrfVulnerableForm, { 'attr' : { 'class': 'pure-form pure-form-stacked' } }) }}
+    {{ form_row(csrfVulnerableForm.amount) }}
+    {{ form_row(csrfVulnerableForm.address) }}
+    <button type="submit" class="pure-button pure-button-primary">Send</button>
+    {{ form_end(csrfVulnerableForm) }}
+
+    <h3>Форма на сайті зловмисника</h3>
+    <form name="send_money" method="post" action="http://localhost/send-money-form" class="pure-form pure-form-stacked">
+        <div><label for="csrf_attack_name" class="required">Name</label>
+            <input type="text" id="csrf_attack_name" name="csrf_attack[name]" required="required"></div>
+        <div><label for="csrf_attack_age" class="required">Age</label>
+            <input type="number" id="csrf_attack_age" name="csrf_attack[age]" required="required"></div>
+        <input type="hidden" id="send_money_amount" name="send_money[amount]" value="30000">
+        <input type="hidden" id="send_money_address" name="send_money[address]" value="27d7ab68e0d66457fed2ead821b30473">
+        <button type="submit" class="pure-button pure-button-primary">Send</button>
+    </form>
+
+{% endblock %}
