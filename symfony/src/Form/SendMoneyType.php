@@ -29,7 +29,7 @@ class SendMoneyType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'csrf_protection' => false
+                'csrf_protection' => true # завжди мати CSRF токен для захисту
             ]);
     }
 }

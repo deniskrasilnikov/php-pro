@@ -34,7 +34,7 @@
 
     <div class="book-info">
         {% for client in clients %}
-            {{ client|join(' ')|raw }}<br>
+            {{ client|join(' ') }}<br> {# не виводити сирі неекрановані дані #}
         {% endfor %}
     </div>
 
@@ -43,6 +43,14 @@
     <h1>CSRF</h1>
 
     <h2>1. Вразливість через GET метод. Посилання у вигляді картинки чи "кнопки" на сайті зловмисника чи в email</h2>
+    <h3>Нормальна дія переказу грошей на нашому сайті</h3>
+
+    {# додано геренацію захисного токену - csrf_token() #}
+    <a href="{{ url('app_webattacks_sendmoney', { 'amount': 1000, 'address': '253f57efe08cc', '_token': csrf_token('send-money') }) }}" class="pure-button pure-button-active">
+        Send money to <i>253f57efe08cc</i> wallet
+    </a>
+
+    <h3>Посилання у вигляді картинки чи "кнопки" на сайті зловмисника чи в email</h3>
 
     <a href="{{ url('app_webattacks_sendmoney', { 'amount': 1000, 'address': 'VV98G7uYkj8CENKC5Ka' }) }}" class="pure-button button-danger">
         View new messages

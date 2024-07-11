@@ -56,13 +56,16 @@ body {
 
 a { color: blue }
 
-.flash-success {
+.flash-success, .flash-error {
     padding: 7px 10px;
     margin: 0 0 10px;
     background: #4f805d;
     color: whitesmoke;
 }
 
+.flash-error {
+    background: indianred;
+}
 
 .pure-form ul {
     list-style-type: none;
