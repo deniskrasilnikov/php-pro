@@ -106,3 +106,10 @@ a { color: blue }
     margin: 0 1em;
     color: firebrick;
 }
+
+.button-danger {
+    background: rgb(202, 60, 60);
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}

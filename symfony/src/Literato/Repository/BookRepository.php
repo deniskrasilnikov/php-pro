@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Literato\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 use Literato\Entity\Book;
 
@@ -25,6 +27,22 @@ class BookRepository extends ServiceEntityRepository
             ->setFirstResult(self::BOOKS_PER_PAGE * $page - self::BOOKS_PER_PAGE)
             ->setMaxResults(self::BOOKS_PER_PAGE)
             ->getResult();
+    }
+
+    /**
+     * This method is vulnerable to SQL-injections. Possible dangerous $namePart values:
+     *
+     *   n/a ' UNION select concat(email, roles) from user #
+     *   n/a ' ; DROP TABLE test  #
+     *
+     * @throws Exception
+     */
+    public function findByNamePart(string $namePart): array
+    {
+        return $this->getEntityManager()
+            ->getConnection()
+            ->executeQuery("SELECT b.name FROM book b WHERE b.name LIKE '%$namePart%'")
+            ->fetchAllAssociative();
     }
 
 }
