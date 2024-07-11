@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 class WebAttacksController extends AbstractController
@@ -30,7 +31,7 @@ class WebAttacksController extends AbstractController
                 SendMoneyType::class,
                 new SendMoney('TXguLRFtrAFrEDA17WuPfrxB84jVzJcNNV', 1200)
             ),
-            'clients' => $entityManager->getRepository(Client::class)->findAll(),
+            'clients' => $entityManager->getRepository(Client::class)->findAll()
         ]);
     }
 
@@ -62,6 +63,8 @@ class WebAttacksController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', "Client created");
+        } else {
+            $this->addFlash('error', "Client form is not valid.");
         }
 
         return $this->redirectToRoute('app_webattacks');
@@ -72,6 +75,10 @@ class WebAttacksController extends AbstractController
     {
         $amount = $request->get('amount');
         $address = $request->get('address');
+
+        if (!$this->isCsrfTokenValid('send-money', $request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid request');
+        }
 
         $this->addFlash('success', "$amount USD sent to $address address.");
 
@@ -87,6 +94,8 @@ class WebAttacksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // send money through some  service
             $this->addFlash('success', "$sendMoney->amount USD sent to $sendMoney->address address.");
+        } else {
+            $this->addFlash('error', "Send money form is not valid.");
         }
 
         return $this->redirectToRoute('app_webattacks');
