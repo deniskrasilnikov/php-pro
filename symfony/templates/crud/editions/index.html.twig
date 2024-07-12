@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
  {% block body %}
+
      <h1>Edition list</h1>
 
      <div class="book-page-nav">
@@ -24,11 +25,11 @@
              {# використання макросу book_info - рендерінг інформації про книгу #}
              {{ book_info(edition.book) }}
 
-             <div class="edition-actions">
-                 <a class="pure-button" href="{{ path('app_edition_print', {'id': edition.id }) }}">Print</a>
-                 <a class="pure-button" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'advanced' }) }}">Print Advanced</a>
-                 <a class="pure-button" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'html' }) }}">Print HTML</a>
-                 <a class="pure-button" href="{{ path('app_edition_payment', {'id': edition.id }) }}">Buy</a>
+             <div class="book-actions">
+                 <a class="btn btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id }) }}">Print</a>
+                 <a class="btn btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'advanced' }) }}">Print Advanced</a>
+                 <a class="btn  btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'html' }) }}">Print HTML</a>
+                 <a class="btn btn-success btn-sm" href="{{ path('app_edition_payment', {'id': edition.id }) }}">Buy</a>
              </div>
          {% endfor %}
 

@@ -64,7 +64,7 @@ class WebAttacksController extends AbstractController
 
             $this->addFlash('success', "Client created");
         } else {
-            $this->addFlash('error', "Client form is not valid.");
+            $this->addFlash('danger', "Client form is not valid.");
         }
 
         return $this->redirectToRoute('app_webattacks');
@@ -95,7 +95,7 @@ class WebAttacksController extends AbstractController
             // send money through some  service
             $this->addFlash('success', "$sendMoney->amount USD sent to $sendMoney->address address.");
         } else {
-            $this->addFlash('error', "Send money form is not valid.");
+            $this->addFlash('danger', "Send money form is not valid.");
         }
 
         return $this->redirectToRoute('app_webattacks');

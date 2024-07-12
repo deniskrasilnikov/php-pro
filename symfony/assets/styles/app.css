@@ -1,24 +1,3 @@
-body {
-    background-color: #e5e5e5;
-    color: #333;
-}
-
-.content {
-    margin: 0 .7em;
-}
-
-.book-menu {
-    background: #191818;
-}
-
-.book-menu a:hover,
-.book-menu a:focus {
-    background: #333;
-}
-
-.book-menu a {
-    color: #999;
-}
 
 .book-label {
     width: 8em;
@@ -41,58 +20,19 @@ body {
 
 .book-name {
     font-size: 1.4rem;
-    margin: 5px 0;
 }
 
 .book-author {
     font-size: 1.06rem;
-    margin: 5px 0 15px;
+    margin-bottom: 15px;
 }
 
 .book-actions {
-    padding: .6em 0 1em;
-    border-bottom: 1px solid #d3d9df;
-}
-
-a { color: blue }
-
-.flash-success, .flash-error {
-    padding: 7px 10px;
-    margin: 0 0 10px;
-    background: #4f805d;
-    color: whitesmoke;
-}
-
-.flash-error {
-    background: indianred;
-}
-
-.pure-form ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    font-size: 0.8em;
-    color: indianred;
-}
-
-.pure-form {
-    margin: 0 1em;
-}
-
-.pure-form label {
-    margin-top: .6em;
-}
-
-.pure-checkbox {
-    font-size: .9em;
-}
-
-.choice-checkboxes {
-    margin: .7em .4em 1em;
+    margin: .6em 0 2em;
 }
 
 .login {
-    margin: 15em auto 0;
+    margin: 15% auto 0;
     max-width: fit-content;
 }
 
@@ -103,16 +43,4 @@ a { color: blue }
 
 .login h2 {
     margin: 0 .5em 1.5em;
-}
-
-.login-error {
-    margin: 0 1em;
-    color: firebrick;
-}
-
-.button-danger {
-    background: rgb(202, 60, 60);
-    color: white;
-    border-radius: 4px;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }

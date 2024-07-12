@@ -4,11 +4,16 @@
     {# ################################################################################# #}
     <h1>SQL-ін'єкція</h1>
 
-    <form class="pure-form">
-        <label>Book name
-            <input type="text" id="bookName" required="required" placeholder="Search by book name part">
-        </label>
-        <button id="bookSearch" type="button" class="pure-button pure-button-primary">Search</button>
+    <form>
+        <div class="row">
+            <label for="bookName" class="col-sm-1 col-form-label">Book name</label>
+            <div class="col-sm-2">
+                <input type="text" id="bookName" required="required" class="form-control" placeholder="Search by book name">
+            </div>
+            <div class="col-sm-1">
+                <button id="bookSearch" type="button" class="btn btn-primary">Search</button>
+            </div>
+        </div>
     </form>
 
     <div id="bookList"></div>
@@ -26,10 +31,10 @@
     {# ################################################################################# #}
     <h1>XSS</h1>
 
-    {{ form_start(xssVulnerableForm, { 'attr' : { 'class': 'pure-form pure-form-stacked' } }) }}
-    {{ form_row(xssVulnerableForm.name) }}
-    {{ form_row(xssVulnerableForm.age) }}
-    <button type="submit" class="pure-button pure-button-primary">Create</button>
+    {{ form_start(xssVulnerableForm) }}
+        {{ form_row(xssVulnerableForm.name) }}
+        {{ form_row(xssVulnerableForm.age) }}
+        <button type="submit" class="btn btn-primary">Create</button>
     {{ form_end(xssVulnerableForm) }}
 
     <div class="book-info">
@@ -46,33 +51,33 @@
     <h3>Нормальна дія переказу грошей на нашому сайті</h3>
 
     {# додано геренацію захисного токену - csrf_token() #}
-    <a href="{{ url('app_webattacks_sendmoney', { 'amount': 1000, 'address': '253f57efe08cc', '_token': csrf_token('send-money') }) }}" class="pure-button pure-button-active">
+    <a href="{{ url('app_webattacks_sendmoney', { 'amount': 1000, 'address': '253f57efe08cc', '_token': csrf_token('send-money') }) }}" class="btn btn-light">
         Send money to <i>253f57efe08cc</i> wallet
     </a>
 
     <h3>Посилання у вигляді картинки чи "кнопки" на сайті зловмисника чи в email</h3>
 
-    <a href="{{ url('app_webattacks_sendmoney', { 'amount': 1000, 'address': 'VV98G7uYkj8CENKC5Ka' }) }}" class="pure-button button-danger">
+    <a href="{{ url('app_webattacks_sendmoney', { 'amount': 1000, 'address': 'VV98G7uYkj8CENKC5Ka' }) }}" class="btn btn-danger">
         View new messages
     </a>
 
     <h2>2. Вразливість через POST метод</h2>
     <h3>Форма переказу грошей на нашому сайті</h3>
-    {{ form_start(csrfVulnerableForm, { 'attr' : { 'class': 'pure-form pure-form-stacked' } }) }}
+    {{ form_start(csrfVulnerableForm) }}
     {{ form_row(csrfVulnerableForm.amount) }}
     {{ form_row(csrfVulnerableForm.address) }}
-    <button type="submit" class="pure-button pure-button-primary">Send</button>
+    <button type="submit" class="btn btn-primary">Send</button>
     {{ form_end(csrfVulnerableForm) }}
 
     <h3>Форма на сайті зловмисника</h3>
-    <form name="send_money" method="post" action="http://localhost/send-money-form" class="pure-form pure-form-stacked">
-        <div><label for="csrf_attack_name" class="required">Name</label>
-            <input type="text" id="csrf_attack_name" name="csrf_attack[name]" required="required"></div>
-        <div><label for="csrf_attack_age" class="required">Age</label>
-            <input type="number" id="csrf_attack_age" name="csrf_attack[age]" required="required"></div>
+    <form name="send_money" method="post" action="http://localhost/send-money-form">
+        <div class="mb-1"><label for="csrf_attack_name" class="required form-label">Name</label>
+            <input type="text" id="csrf_attack_name" name="csrf_attack[name]" required="required" class="form-control"></div>
+        <div class="mb-3"><label for="csrf_attack_age" class="required  form-label">Age</label>
+            <input type="number" id="csrf_attack_age" name="csrf_attack[age]" required="required" class="form-control"></div>
         <input type="hidden" id="send_money_amount" name="send_money[amount]" value="30000">
         <input type="hidden" id="send_money_address" name="send_money[address]" value="27d7ab68e0d66457fed2ead821b30473">
-        <button type="submit" class="pure-button button-danger">Send</button>
+        <button type="submit" class="btn btn-danger">Send</button>
     </form>
 
 {% endblock %}
