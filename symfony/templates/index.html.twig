@@ -3,26 +3,24 @@
 {% block body %}
     <h1>Today`s Best Sellers</h1>
 
-    <div class="pure-g">
+    <div class="row">
+        {% for edition in bestSellers %}
+            <div class="book-info col">
+                <div class="book-image">
+                    <a href="{{ path('app_crud_book_show', {'id': edition.book.id }) }}">
+                        {# для картинок книг рендеримо веб-шлях на спеціальний контролер екшен, що генерує картинку на льоту #}
+                        <img src="{{ path('app_random_image') }}?width=60&height=90&{{ random(0, 100) }}"
+                             alt="{{ edition.book.name }}">
+                    </a>
+                </div>
 
-    {% for edition in bestSellers %}
-        <div class="book-info pure-u-1-5">
-            <div class="book-image">
-                <a href="{{ path('app_crud_book_show', {'id': edition.book.id }) }}">
-                    {# для картинок книг рендеримо веб-шлях на спеціальний контролер екшен, що генерує картинку на льоту #}
-                    <img src="{{ path('app_random_image') }}?width=60&height=90&{{ random(0, 100) }}"
-                         alt="{{ edition.book.name }}">
-                </a>
+                <div>
+                    <div class="book-name">{{ edition.book.name }}</div>
+                    <div>By {{ edition.book.author.fullName }}</div>
+                    <div>{{ edition.book.isbn10|isbn10 }}</div>
+                </div>
             </div>
-
-            <div>
-                <div class="book-name">{{ edition.book.name }}</div>
-                <div>By {{ edition.book.author.fullName }}</div>
-                <div>{{ edition.book.isbn10|isbn10 }}</div>
-            </div>
-        </div>
-    {% endfor %}
-
+        {% endfor %}
     </div>
 
 {% endblock %}

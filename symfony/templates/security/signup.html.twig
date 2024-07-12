@@ -5,12 +5,12 @@
     <div class="login">
         <h2>Sign up for a Literato account</h2>
 
-        {{ form_start(form, { attr: { class: 'pure-form pure-form-stacked'}}) }}
+        {{ form_start(form) }}
             {{ form_errors(form) }}
             {{ form_row(form.email) }}
             {{ form_row(form.password) }}
 
-            <button type="submit" class="pure-button pure-button-primary">Sign up</button>
+            <button type="submit" class="btn btn-primary">Sign up</button>
         {{ form_end(form) }}
 
         <div class="or-signup">
