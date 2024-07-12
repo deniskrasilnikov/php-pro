@@ -30,7 +30,7 @@ class BookRepository extends ServiceEntityRepository
     }
 
     /**
-     * This method is vulnerable to SQL-injections. Possible dangerous $namePart values:
+     * Possible dangerous $namePart values to test:
      *
      *   n/a ' UNION select concat(email, roles) from user #
      *   n/a ' ; DROP TABLE test  #
@@ -41,7 +41,7 @@ class BookRepository extends ServiceEntityRepository
     {
         return $this->getEntityManager()
             ->getConnection()
-            ->executeQuery("SELECT b.name FROM book b WHERE b.name LIKE '%$namePart%'")
+            ->executeQuery("SELECT b.name FROM book b WHERE b.name LIKE '%:name%'", ['name' => $namePart])
             ->fetchAllAssociative();
     }
 
