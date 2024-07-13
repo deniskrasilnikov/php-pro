@@ -39,8 +39,7 @@ h1:first-of-type {
     max-width: fit-content;
 }
 
-.login .or-signup {
-    margin: 1em 1em 0;
+.login .text-secondary {
     font-size: 0.9em;
 }
 
