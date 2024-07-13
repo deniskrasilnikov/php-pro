@@ -4,15 +4,13 @@
     {# ################################################################################# #}
     <h1>SQL-ін'єкція</h1>
 
-    <form>
-        <div class="row">
-            <label for="bookName" class="col-sm-1 col-form-label">Book name</label>
-            <div class="col-sm-2">
-                <input type="text" id="bookName" required="required" class="form-control" placeholder="Search by book name">
-            </div>
-            <div class="col-sm-1">
-                <button id="bookSearch" type="button" class="btn btn-primary">Search</button>
-            </div>
+    <form class="row">
+        <label for="bookName" class="col-1 col-form-label">Book name</label>
+        <div class="col-2">
+            <input type="text" id="bookName" required="required" class="form-control" placeholder="Search by book name">
+        </div>
+        <div class="col-1">
+            <button id="bookSearch" type="button" class="btn btn-primary">Search</button>
         </div>
     </form>
 
@@ -29,48 +27,49 @@
     </script>
 
     {# ################################################################################# #}
-    <h1>XSS</h1>
+    <h1 class="mt-5">XSS</h1>
 
-    {{ form_start(xssVulnerableForm) }}
+    {{ form_start(xssVulnerableForm, {attr: {class: "col-3"}}) }}
         {{ form_row(xssVulnerableForm.name) }}
         {{ form_row(xssVulnerableForm.age) }}
         <button type="submit" class="btn btn-primary">Create</button>
     {{ form_end(xssVulnerableForm) }}
 
-    <div class="book-info">
-        {% for client in clients %}
-            {{ client|join(' ') }}<br> {# не виводити сирі неекрановані дані #}
-        {% endfor %}
+    <div class="mt-3">
+        <code>
+            {% for client in clients %}
+                {{ client|join(' ') }}<br> {# не виводити сирі неекрановані дані #}
+            {% endfor %}
+        </code>
     </div>
 
-
     {# ################################################################################# #}
-    <h1>CSRF</h1>
+    <h1 class="mt-5">CSRF</h1>
 
-    <h2>1. Вразливість через GET метод. Посилання у вигляді картинки чи "кнопки" на сайті зловмисника чи в email</h2>
-    <h3>Нормальна дія переказу грошей на нашому сайті</h3>
+    <h3>1. Вразливість через GET метод</h3>
+    <h5>Нормальна дія переказу грошей на нашому сайті</h5>
 
     {# додано геренацію захисного токену - csrf_token() #}
     <a href="{{ url('app_webattacks_sendmoney', { 'amount': 1000, 'address': '253f57efe08cc', '_token': csrf_token('send-money') }) }}" class="btn btn-light">
         Send money to <i>253f57efe08cc</i> wallet
     </a>
 
-    <h3>Посилання у вигляді картинки чи "кнопки" на сайті зловмисника чи в email</h3>
+    <h5 class="mt-2">Посилання у вигляді картинки чи "кнопки" на сайті зловмисника чи в email</h5>
 
     <a href="{{ url('app_webattacks_sendmoney', { 'amount': 1000, 'address': 'VV98G7uYkj8CENKC5Ka' }) }}" class="btn btn-danger">
         View new messages
     </a>
 
-    <h2>2. Вразливість через POST метод</h2>
-    <h3>Форма переказу грошей на нашому сайті</h3>
-    {{ form_start(csrfVulnerableForm) }}
+    <h3 class="mt-3">2. Вразливість через POST метод</h3>
+    <h5>Форма переказу грошей на нашому сайті</h5>
+    {{ form_start(csrfVulnerableForm, {attr: {class: "col-3"}}) }}
     {{ form_row(csrfVulnerableForm.amount) }}
     {{ form_row(csrfVulnerableForm.address) }}
     <button type="submit" class="btn btn-primary">Send</button>
     {{ form_end(csrfVulnerableForm) }}
 
-    <h3>Форма на сайті зловмисника</h3>
-    <form name="send_money" method="post" action="http://localhost/send-money-form">
+    <h5 class="mt-3">Форма на сайті зловмисника</h5>
+    <form class="mb-3 col-3" name="send_money" method="post" action="http://localhost/send-money-form">
         <div class="mb-1"><label for="csrf_attack_name" class="required form-label">Name</label>
             <input type="text" id="csrf_attack_name" name="csrf_attack[name]" required="required" class="form-control"></div>
         <div class="mb-3"><label for="csrf_attack_age" class="required  form-label">Age</label>

@@ -1,7 +1,7 @@
 // скрипти для сторінки авторів
 
 const authorsHeader = document.getElementById('authors-from-json');
-authorsHeader.innerHTML = 'Click to get authors from JSON';
+authorsHeader.innerHTML = '<a href="#">Click to get authors from JSON</a>';
 
 authorsHeader.onclick = function (event) {
     console.log(event)

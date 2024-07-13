@@ -52,14 +52,12 @@ class BookType extends AbstractType
             ])->add('text', TextareaType::class, [
                 'label' => 'Text',
                 'attr' => [
-                    'cols' => 60,
-                    'rows' => 7,
                     'placeholder' => 'Enter book text here ...'
                 ],
             ]);
 
         if ($builder->getData() instanceof Novel) {
-            $builder->add('synopsis', null, [
+            $builder->add('synopsis', TextareaType::class, [
                 'label' => 'Synopsis',
             ]);
         }
