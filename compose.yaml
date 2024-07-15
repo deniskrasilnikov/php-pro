@@ -40,6 +40,11 @@ services:
         volumes:
             - db:/var/lib/mysql
 
+    redis:
+        image: redis:latest
+        volumes:
+            - redis:/data
+
     mailcatcher:
         image: schickling/mailcatcher
         ports:
@@ -48,3 +53,4 @@ services:
 
 volumes:
     db:
+    redis:

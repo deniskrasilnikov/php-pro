@@ -26,7 +26,9 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install \
     gd \
     pdo_mysql \
-    opcache
+    opcache \
+    && pecl install redis \
+    && docker-php-ext-enable redis
 
 # Installs Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1

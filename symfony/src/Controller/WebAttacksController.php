@@ -9,6 +9,8 @@ use App\Form\XSSClientType;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Literato\Repository\BookRepository;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,16 +39,32 @@ class WebAttacksController extends AbstractController
 
     /**
      * @throws Exception
+     * @throws InvalidArgumentException
      */
     #[Route('/book-search', name: 'app_webattacks_search')]
-    public function bookSearch(#[MapQueryParameter] ?string $bookName, BookRepository $bookRepository): Response
+    public function bookSearch(#[MapQueryParameter] ?string $bookName, BookRepository $bookRepository, CacheItemPoolInterface $cache): Response
     {
-        if ($bookName) {
-            $books = $bookRepository->findByNamePart($bookName);
+        if (!trim($bookName)) {
+            return new Response(status: Response::HTTP_NOT_FOUND);
+        }
+
+        $booksItem = $cache->getItem($searchKey = 'book.search.'.$bookName);
+
+        if (!$booksItem->isHit()) {
+            $booksItem->set($bookRepository->findByNamePart($bookName));
+            $booksItem->expiresAt(new \DateTime('+15 minute'));
+            $cache->save($booksItem);
+
+            # зберігаємо назву ключа в якості значення іншого "загального" ключа.
+            $allKeysItem = $cache->getItem('book.search.keys');
+            $keys = $allKeysItem->get() ?? [];
+            $keys[] = $searchKey;
+            $allKeysItem->set(array_unique($keys));
+            $cache->save($allKeysItem);
         }
 
         return $this->render('web-attacks/books.html.twig', [
-            'books' => $books ?? [],
+            'books' => $booksItem->get(),
             'bookName' => $bookName
         ]);
     }

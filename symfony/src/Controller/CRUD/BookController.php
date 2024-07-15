@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Literato\Entity\Book;
 use Literato\Entity\Enum\BookType;
 use Literato\Repository\BookRepository;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,14 +63,20 @@ class BookController extends AbstractController
 
     /** Створити книгу */
     #[Route('/new/{bookType}', name: 'app_crud_book_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, BookType $bookType): Response {
-
+    public function new(Request $request, EntityManagerInterface $entityManager, BookType $bookType, CacheItemPoolInterface $cache): Response {
         $form = $this->createForm(BookForm::class, $bookType->entity());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($book = $form->getData());
             $entityManager->flush();
+
+            # видаляємо ключі, що стосуються зберігання результатів пошуку книг
+            $bookKeysItem = $cache->getItem('book.search.keys');
+            if ($keys = $bookKeysItem->get()) {
+                $cache->deleteItems($keys);
+                $cache->deleteItem($bookKeysItem->getKey());
+            }
 
             $this->addFlash('success', "Book {$book->getName()} created successfully");
 

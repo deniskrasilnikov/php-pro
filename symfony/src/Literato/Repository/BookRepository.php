@@ -24,6 +24,7 @@ class BookRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('b')
             ->orderBy('b.id')
             ->getQuery()
+            ->enableResultCache(60)
             ->setFirstResult(self::BOOKS_PER_PAGE * $page - self::BOOKS_PER_PAGE)
             ->setMaxResults(self::BOOKS_PER_PAGE)
             ->getResult();
