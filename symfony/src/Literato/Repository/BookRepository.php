@@ -21,7 +21,7 @@ class BookRepository extends ServiceEntityRepository
 
     public function findPage(int $page = 1)
     {
-        return  $this->createQueryBuilder('b')
+        return $this->createQueryBuilder('b')
             ->orderBy('b.id')
             ->getQuery()
             ->setFirstResult(self::BOOKS_PER_PAGE * $page - self::BOOKS_PER_PAGE)
@@ -41,7 +41,7 @@ class BookRepository extends ServiceEntityRepository
     {
         return $this->getEntityManager()
             ->getConnection()
-            ->executeQuery("SELECT b.name FROM book b WHERE b.name LIKE '%:name%'", ['name' => $namePart])
+            ->executeQuery('SELECT b.name FROM book b WHERE b.name LIKE :name', ['name' => "%$namePart%"])
             ->fetchAllAssociative();
     }
 
