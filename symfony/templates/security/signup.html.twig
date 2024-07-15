@@ -5,6 +5,10 @@
     <div class="login">
         <h2>Sign up for a Literato account</h2>
 
+        <div class="mb-4 text-secondary">
+            Already have an account? <a href="{{ path('app_login') }}">Log in</a>
+        </div>
+
         {{ form_start(form) }}
             {{ form_errors(form) }}
             {{ form_row(form.email) }}
@@ -13,8 +17,5 @@
             <button type="submit" class="btn btn-primary">Sign up</button>
         {{ form_end(form) }}
 
-        <div class="or-signup">
-            Already have an account? <a href="{{ path('app_login') }}">Log in</a>
-        </div>
     </div>
 {% endblock %}
