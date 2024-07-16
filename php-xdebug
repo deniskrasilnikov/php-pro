@@ -1,2 +1,0 @@
-#!/bin/sh
-docker compose exec -e XDEBUG_MODE=debug -w /home/php-pro/symfony php bash
