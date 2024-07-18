@@ -41,8 +41,7 @@ class AppExtension extends AbstractExtension
 
     public function formatPrice($number, $decimals = 0, $decPoint = '.', $thousandsSep = ','): string
     {
-        $price = number_format($number, $decimals, $decPoint, $thousandsSep);
-        return '$' . $price;
+        return number_format($number, $decimals, $decPoint, $thousandsSep);
     }
 
     public function formatCents($number): string

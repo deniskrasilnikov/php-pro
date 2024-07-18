@@ -40,7 +40,7 @@ class Edition implements PrintableInterface, PayableInterface
 
         #[Column(name: 'published_at', type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
         #[Serialize\Groups(['edition_item'])]
-        private readonly ?DateTime $publishedAt = null,
+        private ?DateTime $publishedAt = null,
 
         #[Column(type: 'smallint')]
         #[Serialize\Groups(['edition_list'])]
@@ -122,6 +122,26 @@ class Edition implements PrintableInterface, PayableInterface
         return $this->book;
     }
 
+    public function getName(): string
+    {
+        return $this->book->getName();
+    }
+
+    public function getAuthorName(): string
+    {
+        return $this->book->getAuthor()->getFullName();
+    }
+
+    public function getPublisherName(): string
+    {
+        return $this->publisher->getName();
+    }
+
+    public function getIsbn10(): string
+    {
+        return $this->book->getIsbn10();
+    }
+
     /**
      * @param int $authorBaseReward
      */
@@ -162,37 +182,12 @@ class Edition implements PrintableInterface, PayableInterface
         $this->price = $price;
     }
 
-
-    /**
-     * @return int
-     */
-    public function getSoldCopiesCount(): int
-    {
-        return $this->soldCopiesCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAuthorBaseReward(): int
-    {
-        return $this->authorBaseReward;
-    }
-
     /**
      * @return int
      */
     public function getPrice(): int
     {
         return $this->price;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getPublishedAt(): ?DateTime
-    {
-        return $this->publishedAt;
     }
 
     public function getPaymentPrice(): int
@@ -203,6 +198,25 @@ class Edition implements PrintableInterface, PayableInterface
     public function getPaymentSubject(): string
     {
         return sprintf("%s [%s]", $this->book->getName(), $this->book->getIsbn10());
+    }
+
+    public function publish()
+    {
+        if (!$this->price) {
+            $this->price = rand(1000, 5000);
+        }
+
+        if (!$this->authorBaseReward) {
+            $this->authorBaseReward = min($this->book->getAuthor()->getBooksCount() * 100, 1000);
+        }
+
+        $this->publishedAt = new DateTime();
+        $this->status = EditionStatus::Published;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->status == EditionStatus::Published;
     }
 
     public function getPublisher(): Publisher

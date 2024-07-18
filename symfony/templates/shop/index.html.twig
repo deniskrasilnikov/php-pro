@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+ {% block body %}
+     <h1>Edition Shop</h1>
+
+     {% if editions|length %}
+         {% for edition in editions %}
+             <div class="book-info">
+                 <div class="book-image">
+                     <img src="{{ path('app_random_image') }}?width=100&height=175&{{ random(0, 100) }}" alt="{{ edition.name }}">
+                 </div>
+
+                 <div class="ms-1">
+                     <div class="book-name">{{ edition.name }} </div>
+                     <div class="book-author">By {{ edition.authorName }}</div>
+                     <span class="book-label">Publisher</span>{{ edition.publisherName }}<br>
+                     <span class="book-label">ISBN</span>{{ edition.isbn10|isbn10 }}<br>
+                     <span class="edition-price in-dollars">{{ edition.price|cents(2) }}</span>
+                 </div>
+             </div>
+
+             <div class="book-actions">
+                 <a class="btn btn-primary" href="{{ path('app_shop_order', {'id': edition.id }) }}" target="_blank">Buy</a>
+             </div>
+
+         {% endfor %}
+
+     {% else %}
+         No editions found
+     {% endif %}
+
+ {% endblock %}

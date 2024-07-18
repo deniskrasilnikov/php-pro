@@ -46,3 +46,11 @@ h1:first-of-type {
 .login h2 {
     margin: 0 .5em 1.5em;
 }
+
+.edition-price {
+    font-size: 2em;
+}
+
+.in-dollars:before {
+    content: '$';
+}

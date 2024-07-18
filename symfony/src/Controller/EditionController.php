@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Module\Literato\Entity\Edition;
+use App\Module\Literato\Manager\EditionManager;
 use App\Module\Literato\Repository\EditionRepository;
 use App\Module\Literato\Service\Payments\PaymentGatewayInterface;
 use App\Module\Literato\Service\Printing\PrinterFactory;
@@ -28,6 +29,14 @@ class EditionController extends AbstractController
         $printer = $printerFactory->createPrinter($request->get('format'));
 
         return new Response($printer->print($edition));
+    }
+
+    #[Route('/edition/{id}/published', name: 'app_edition_published')]
+    public function publish(Edition $edition, EditionManager $editionManager): Response {
+
+        $editionManager->publish($edition);
+
+        return $this->redirectToRoute('app_crud_edition_index');
     }
 
     #[Route('/edition/{id}/payment', name: 'app_edition_payment')]

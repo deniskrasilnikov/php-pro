@@ -29,7 +29,7 @@ services:
     App\Module\Literato\Service\Payments\PaymentGatewayInterface: '@payment_gateway.cryptomus'
 
     payment_gateway.base:
-        class: Literato\Service\Payments\PaymentGateway
+        class: App\Module\Literato\Service\Payments\PaymentGateway
 
     payment_gateway.cryptomus:
-        class: Literato\Service\Payments\CryptomusPaymentGateway
+        class: App\Module\Literato\Service\Payments\CryptomusPaymentGateway
