@@ -204,4 +204,9 @@ class Edition implements PrintableInterface, PayableInterface
     {
         return sprintf("%s [%s]", $this->book->getName(), $this->book->getIsbn10());
     }
+
+    public function getPublisher(): Publisher
+    {
+        return $this->publisher;
+    }
 }

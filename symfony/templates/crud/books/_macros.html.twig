@@ -3,23 +3,28 @@
 Це приклад застосування принципу DRY (не повторюй себе, не дублюй свій код!) #}
 
 {# макрос book_info приймає об'єкт книги як аргумент, щоб відобразити її інформацію #}
-{% macro book_info(book) %}
+{% macro book_info(book, edition) %}
     <div class="book-info">
         <div class="book-image">
             <img src="{{ path('app_random_image') }}?width=100&height=175&{{ random(0, 100) }}" alt="{{ book.name }}">
         </div>
 
         <div class="ms-1">
-            <div class="book-name">{{ book.name }}</div>
+            <div class="book-name">{{ book.name }} </div>
             <div class="book-author">By {{ book.author.fullName }}</div>
 
+
+            {% if edition %}
+                <span class="book-label">Publisher</span>{{ edition.publisher.name }}<br>
+                <span class="book-label">ISBN</span>{{ book.isbn10|isbn10 }}<br>
+            {% endif %}
             <span class="book-label">Type</span>{{ book.type }}<br>
-            <span class="book-label">ISBN</span>{{ book.isbn10|isbn10 }}<br>
             <span class="book-label">Genres</span>{{ book.genres|column('value')|join(', ')|default('n/a') }}<br>
 
-            {% if book.synopsis is defined %}
+            {% if book.synopsis is defined and not edition %}
                 <span class="book-label">Synopsis</span>{{ book.synopsis }}<br>
             {% endif %}
+
         </div>
     </div>
 {% endmacro %}

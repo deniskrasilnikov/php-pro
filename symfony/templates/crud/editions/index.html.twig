@@ -23,14 +23,14 @@
 
          {% for edition in editions %}
              {# використання макросу book_info - рендерінг інформації про книгу #}
-             {{ book_info(edition.book) }}
+             {{ book_info(edition.book, edition) }}
 
              <div class="book-actions">
                  <a class="btn btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id }) }}">Print</a>
                  <a class="btn btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'advanced' }) }}">Print Advanced</a>
                  <a class="btn  btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'html' }) }}">Print HTML</a>
-                 <a class="btn btn-success btn-sm" href="{{ path('app_edition_payment', {'id': edition.id }) }}">Buy</a>
              </div>
+
          {% endfor %}
 
      {% else %}
