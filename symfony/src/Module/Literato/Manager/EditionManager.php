@@ -8,15 +8,18 @@ use App\Module\Literato\DTO\CreateEdition;
 use App\Module\Literato\DTO\UpdateEdition;
 use App\Module\Literato\Entity\Edition;
 use App\Module\Literato\Entity\Publisher;
+use App\Module\Literato\Event\EditionPublishedEvent;
 use App\Module\Literato\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class EditionManager
+readonly class EditionManager
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly BookRepository $bookRepository,
+        private EntityManagerInterface $entityManager,
+        private BookRepository $bookRepository,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -72,5 +75,12 @@ class EditionManager
         $this->entityManager->flush();
 
         return $edition;
+    }
+
+    public function publish(Edition $edition): void
+    {
+        $edition->publish();
+        $this->entityManager->flush();
+        $this->eventDispatcher->dispatch(new EditionPublishedEvent($edition));
     }
 }

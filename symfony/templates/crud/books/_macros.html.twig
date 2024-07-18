@@ -14,9 +14,13 @@
             <div class="book-author">By {{ book.author.fullName }}</div>
 
 
+            {% if edition.published|default(false) %}
+                <div><span class="badge bg-success">published</span></div>
+            {% endif %}
+
             {% if edition %}
-                <span class="book-label">Publisher</span>{{ edition.publisher.name }}<br>
-                <span class="book-label">ISBN</span>{{ book.isbn10|isbn10 }}<br>
+                <span class="book-label">Publisher</span>{{ edition.publisherName }}<br>
+                <span class="book-label">ISBN</span>{{ edition.isbn10|isbn10 }}<br>
             {% endif %}
             <span class="book-label">Type</span>{{ book.type }}<br>
             <span class="book-label">Genres</span>{{ book.genres|column('value')|join(', ')|default('n/a') }}<br>

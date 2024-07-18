@@ -29,6 +29,10 @@
                  <a class="btn btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id }) }}">Print</a>
                  <a class="btn btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'advanced' }) }}">Print Advanced</a>
                  <a class="btn  btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'html' }) }}">Print HTML</a>
+
+                 {% if not edition.published %}
+                     <a class="btn btn-success btn-sm" href="{{ path('app_edition_published', {'id': edition.id }) }}">Publish</a>
+                 {% endif %}
              </div>
 
          {% endfor %}

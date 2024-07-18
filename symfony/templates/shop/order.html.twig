@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+ {% block body %}
+
+     <h1>Order # {{ order.orderNumber }}</h1>
+
+     <div class=" col-7">
+         <table class="table ">
+             <thead>
+             <tr>
+                 <th scope="col">#</th>
+                 <th scope="col">Name</th>
+                 <th scope="col">Quantity</th>
+                 <th scope="col">Price</th>
+             </tr>
+             </thead>
+             <tbody>
+
+             {% for item in order.items %}
+                 <tr>
+                     <th scope="row">{{ loop.index }}</th>
+                     <td>{{ item.name }}</td>
+                     <td>{{ item.quantity }}</td>
+                     <td class="in-dollars">{{ item.price|cents }}</td>
+                 </tr>
+             {% endfor %}
+
+             <tr class="fw-bolder ">
+                 <th scope="row"></th>
+                 <td colspan="2">Total cost</td>
+                 <td class="in-dollars ">{{ order.totalCost|cents }}</td>
+             </tr>
+             </tbody>
+
+         </table>
+     </div>
+
+
+ {% endblock %}
