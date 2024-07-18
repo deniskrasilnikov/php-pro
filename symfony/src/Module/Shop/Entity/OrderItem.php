@@ -60,11 +60,6 @@ class OrderItem
         return $this->edition->getName() . ' by ' . $this->edition->getAuthorName();
     }
 
-    public function getSecondaryName(): string
-    {
-        return $this->edition->getIsbn10();
-    }
-
     public function getQuantity(): int
     {
         return $this->quantity;
