@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use Literato\Service\Printing\PrinterFactory;
-use Literato\Entity\Edition;
-use Literato\Repository\EditionRepository;
-use Literato\Service\Payments\PaymentGatewayInterface;
+use App\Module\Literato\Entity\Edition;
+use App\Module\Literato\Repository\EditionRepository;
+use App\Module\Literato\Service\Payments\PaymentGatewayInterface;
+use App\Module\Literato\Service\Printing\PrinterFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

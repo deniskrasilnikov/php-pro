@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listener;
 
-use Literato\Service\Payments\Events\PaymentEvent;
+use App\Module\Literato\Service\Payments\Events\PaymentEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 # СПОСТЕРІГАЧ (СЛУХАЧ) ПОДІЇ

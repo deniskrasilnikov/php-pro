@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Literato\Entity\Edition;
-use Literato\Repository\EditionRepository;
+use App\Module\Literato\Entity\Edition;
+use App\Module\Literato\Repository\EditionRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

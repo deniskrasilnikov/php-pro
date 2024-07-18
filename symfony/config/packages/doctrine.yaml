@@ -20,8 +20,8 @@ doctrine:
             Literato:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Literato/Entity'
-                prefix: 'Literato\Entity'
+                dir: '%kernel.project_dir%/src/Module/Literato/Entity'
+                prefix: 'App\Module\Literato\Entity'
                 alias: Literato
             App:
                 type: attribute

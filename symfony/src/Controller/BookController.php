@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use Literato\Service\Printing\PrinterInterface;
+use App\Module\Literato\Entity\Author;
+use App\Module\Literato\Entity\Book;
+use App\Module\Literato\Manager\BookManager;
+use App\Module\Literato\Service\Printing\PrinterInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Literato\Entity\Author;
-use Literato\Entity\Book;
-use Literato\Manager\BookManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

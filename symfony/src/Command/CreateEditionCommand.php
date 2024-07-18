@@ -2,13 +2,13 @@
 
 namespace App\Command;
 
+use App\Module\Literato\Entity\Book;
+use App\Module\Literato\Entity\Edition;
+use App\Module\Literato\Entity\Publisher;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Exception\ORMException;
 use Faker\Generator;
-use Literato\Entity\Book;
-use Literato\Entity\Edition;
-use Literato\Entity\Publisher;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

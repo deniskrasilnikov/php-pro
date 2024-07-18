@@ -17,20 +17,16 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
-            - '../src/Literato/'
+            - '../src/Module/Literato/Entity'
+            - '../src/Module/Literato/DTO'
+            - '../src/Module/Shop/Entity'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
-    Literato\:
-        resource: '../src/Literato/'
-        exclude:
-            - '../src/Literato/Entity/'
-            - '../src/Literato/DTO/'
 
     Faker\Generator:
         factory: ['Faker\Factory', 'create']
 
-    Literato\Service\Payments\PaymentGatewayInterface: '@payment_gateway.cryptomus'
+    App\Module\Literato\Service\Payments\PaymentGatewayInterface: '@payment_gateway.cryptomus'
 
     payment_gateway.base:
         class: Literato\Service\Payments\PaymentGateway

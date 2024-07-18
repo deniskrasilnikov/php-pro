@@ -65,7 +65,6 @@
     },
     "autoload": {
         "psr-4": {
-            "Literato\\": "src/Literato",
             "App\\": "src/"
         }
     },

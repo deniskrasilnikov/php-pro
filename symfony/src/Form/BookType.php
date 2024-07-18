@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Module\Literato\Entity\Author;
+use App\Module\Literato\Entity\Enum\Genre;
+use App\Module\Literato\Entity\Novel;
 use App\Validator\Isbn10;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Literato\Entity\Author;
-use Literato\Entity\Enum\Genre;
-use Literato\Entity\Novel;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;

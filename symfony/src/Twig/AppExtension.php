@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Module\Literato\Entity\Enum\BookType;
 use Biblys\Isbn\Isbn;
 use Exception;
-use Literato\Entity\Enum\BookType;
 use Psr\Log\LoggerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;

@@ -2,13 +2,13 @@
 
 namespace App\Command;
 
+use App\Module\Literato\Entity\Author;
+use App\Module\Literato\Entity\Book;
+use App\Module\Literato\Entity\Exception\BookValidationException;
+use App\Module\Literato\Entity\Exception\TextWordLengthException;
+use App\Module\Literato\Manager\BookManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Generator;
-use Literato\Entity\Author;
-use Literato\Entity\Book;
-use Literato\Entity\Exception\BookValidationException;
-use Literato\Entity\Exception\TextWordLengthException;
-use Literato\Manager\BookManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

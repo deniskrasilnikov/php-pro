@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Module\Literato\DTO\CreateEdition;
+use App\Module\Literato\DTO\UpdateEdition;
+use App\Module\Literato\Entity\Edition;
+use App\Module\Literato\Manager\EditionManager;
+use App\Module\Literato\Repository\EditionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Literato\DTO\CreateEdition;
-use Literato\DTO\UpdateEdition;
-use Literato\Entity\Edition;
-use Literato\Manager\EditionManager;
-use Literato\Repository\EditionRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

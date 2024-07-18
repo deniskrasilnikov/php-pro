@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace App\Controller\CRUD;
 
 use App\Form\BookType as BookForm;
+use App\Module\Literato\Entity\Book;
+use App\Module\Literato\Entity\Enum\BookType;
+use App\Module\Literato\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Literato\Entity\Book;
-use Literato\Entity\Enum\BookType;
-use Literato\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
-
 use Symfony\Component\Routing\Requirement\Requirement;
 
 use const FILTER_VALIDATE_REGEXP;

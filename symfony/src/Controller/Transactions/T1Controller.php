@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Transactions;
 
+use App\Module\Literato\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Literato\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

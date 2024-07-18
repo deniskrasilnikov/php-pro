@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Module\Literato\Entity\Book;
 use Doctrine\ORM\EntityManagerInterface;
-use Literato\Entity\Book;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
