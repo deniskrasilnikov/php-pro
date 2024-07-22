@@ -8,10 +8,11 @@ use App\Module\Shop\Entity\Edition;
 use App\Module\Shop\Entity\Order;
 use App\Module\Shop\Entity\OrderItem;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 readonly class OrderService
 {
-    public function __construct(private EntityManagerInterface $shopEntityManager)
+    public function __construct(private EntityManagerInterface $shopEntityManager, private LoggerInterface $logger)
     {
     }
 
@@ -27,8 +28,10 @@ readonly class OrderService
         try {
             $this->shopEntityManager->flush();
         } catch (\Exception $e) {
-            $e->getMessage();
+            $this->logger->error($e->getMessage());
+            throw new \RuntimeException('Can not create order', 0, $e);
         }
+
         return $order;
     }
 }
