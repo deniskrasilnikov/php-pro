@@ -31,7 +31,7 @@ class OrderItem
     private Order $order;
 
     #[Column(type: 'smallint')]
-    private int $price;
+    private int $price = 0;
 
     #[Column(type: 'smallint')]
     private int $quantity;
