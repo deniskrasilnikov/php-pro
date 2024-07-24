@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Module\Literato\Service\Payments;
+namespace Literato\Bundle\PaymentBundle\Gateway;
 
-use App\Module\Literato\Service\Payments\Events\PaymentEvent;
+use Literato\Bundle\PaymentBundle\Event\PaymentEvent;
+use Literato\Bundle\PaymentBundle\PayableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -27,7 +28,7 @@ class PaymentGateway implements PaymentGatewayInterface
 
         $result = [
             'subject' => $payable->getPaymentSubject(),
-            "price" => $payable->getPaymentPrice(),
+            "price" => $payable->getPaymentAmount(),
             'user' => $user->getUserIdentifier(),
             'status' => self::STATUS_SUCCESS
         ];

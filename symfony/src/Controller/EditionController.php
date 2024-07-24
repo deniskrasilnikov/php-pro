@@ -5,14 +5,12 @@ namespace App\Controller;
 use App\Module\Literato\Entity\Edition;
 use App\Module\Literato\Manager\EditionManager;
 use App\Module\Literato\Repository\EditionRepository;
-use App\Module\Literato\Service\Payments\PaymentGatewayInterface;
 use App\Module\Literato\Service\Printing\PrinterFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class EditionController extends AbstractController
 {
@@ -37,17 +35,5 @@ class EditionController extends AbstractController
         $editionManager->publish($edition);
 
         return $this->redirectToRoute('app_crud_edition_index');
-    }
-
-    #[Route('/edition/{id}/payment', name: 'app_edition_payment')]
-    public function payment(
-        Edition $edition,
-        #[CurrentUser] $user,
-        PaymentGatewayInterface $paymentGateway
-    ): JsonResponse {
-
-        $status = $paymentGateway->makePayment($edition, $user);
-
-        return new JsonResponse($status);
     }
 }

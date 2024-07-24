@@ -1,0 +1,6 @@
+literato_payment:
+    default_gateway: cryptomus
+    gateways:
+        cryptomus:
+            payout_key: '%env(CRYPTOMUS_PAYOUT_KEY)%'
+            merchant_uuid: '%env(CRYPTOMUS_MERCHANT_UUID)%'

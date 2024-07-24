@@ -2,7 +2,10 @@
 
  {% block body %}
 
-     <h1>Order # {{ order.orderNumber }}</h1>
+     <h1>Order #{{ order.orderNumber }} </h1>
+     <span class="badge bg-secondary">
+         {% if order.new %}Waiting for a payment{% endif %}
+     </span>
 
      <div class=" col-7">
          <table class="table ">
@@ -35,5 +38,8 @@
          </table>
      </div>
 
+     <div class="book-actions">
+         <a class="btn btn-primary" href="{{ path('app_shop_order_payment', {'orderNumber': order.orderNumber }) }}">Pay</a>
+     </div>
 
  {% endblock %}

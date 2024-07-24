@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace App\Module\Literato\Service\Payments;
+namespace Literato\Bundle\PaymentBundle\Gateway;
 
 use Cryptomus\Api\Client as Cryptomus;
 use Cryptomus\Api\RequestBuilderException;
+use Literato\Bundle\PaymentBundle\PayableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 # АДАПТЕР: адатпує використання бібліотеки з несумісним інтерфейсом під нашу систему і НАШ інтерфейс
-class CryptomusPaymentGateway implements PaymentGatewayInterface
+readonly class CryptomusPaymentGateway implements PaymentGatewayInterface
 {
-    private const PAYOUT_KEY = 'qseRhcxu6wsxhygfhyidwrrgryrrgefhPP0F1cNedoR7FGEYGA1mTgMPX8OpRcl2c3HexNedoR7FGEYGA1mTgMPI8lzKl7Ct2I43R6S1f4EAaZQKmefhSC3gVDS3rkGX';
-    private const MERCHANT_UUID = 'c26b80a8-9549-4a66-bb53-774f12809249';
+    public function __construct(private string $payoutKey, private string $merchantUuid)
+    {
 
-    /**
-     * @throws RequestBuilderException
-     */
+    }
+
     public function makePayment(PayableInterface $payable, UserInterface $user): array
     {
-        $payout = Cryptomus::payout(self::PAYOUT_KEY, self::MERCHANT_UUID);
+        $payout = Cryptomus::payout($this->payoutKey, $this->merchantUuid);
 
         $data = [
-            'amount' => $payable->getPaymentPrice(),
+            'amount' => $payable->getPaymentAmount(),
             'currency' => 'USD',
             'network' => 'TRON',
             'order_id' => '555321',
@@ -31,7 +31,15 @@ class CryptomusPaymentGateway implements PaymentGatewayInterface
             'url_callback' => 'https://example.com/callback'
         ];
 
-        $result = $payout->create($data);
+        try {
+            $result = $payout->create($data);
+        } catch (\Exception $e) {
+            $result = [
+                'subject' => $payable->getPaymentSubject(),
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ];
+        }
 
         return (array)$result;
     }

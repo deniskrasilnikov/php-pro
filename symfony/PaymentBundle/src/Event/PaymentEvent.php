@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Module\Literato\Service\Payments\Events;
+namespace Literato\Bundle\PaymentBundle\Event;
 
-use App\Module\Literato\Service\Payments\PayableInterface;
+use Literato\Bundle\PaymentBundle\PayableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class PaymentEvent

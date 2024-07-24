@@ -4,7 +4,6 @@ namespace App\Module\Literato\Entity;
 
 use App\Module\Literato\Entity\Enum\EditionStatus;
 use App\Module\Literato\Repository\EditionRepository;
-use App\Module\Literato\Service\Payments\PayableInterface;
 use App\Module\Literato\Service\Printing\PrintableInterface;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
@@ -16,7 +15,7 @@ use Symfony\Component\Serializer\Attribute as Serialize;
  */
 #[Entity(repositoryClass: EditionRepository::class)]
 #[Table(name: 'edition')]
-class Edition implements PrintableInterface, PayableInterface
+class Edition implements PrintableInterface
 {
     use PublisherAware;
     use Timestampable;
@@ -188,16 +187,6 @@ class Edition implements PrintableInterface, PayableInterface
     public function getPrice(): int
     {
         return $this->price;
-    }
-
-    public function getPaymentPrice(): int
-    {
-        return $this->getPrice();
-    }
-
-    public function getPaymentSubject(): string
-    {
-        return sprintf("%s [%s]", $this->book->getName(), $this->book->getIsbn10());
     }
 
     public function publish()
