@@ -1,4 +1,7 @@
 {
+    "dkrasilnikov/literato-payment-bundle": {
+        "version": "0.1.0"
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.12",
         "recipe": {
