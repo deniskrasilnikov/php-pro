@@ -13,11 +13,12 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
+use Literato\Bundle\PaymentBundle\PayableInterface;
 
 #[Entity]
 #[Table(name: '`order`')]
 # AGGREGATE ENTITY згідно DDD
-class Order
+class Order implements PayableInterface
 {
     #[Id]
     #[GeneratedValue]
@@ -77,5 +78,25 @@ class Order
     public function getTotalCost(): int
     {
         return $this->totalCost;
+    }
+
+    public function getPaymentAmount(): int
+    {
+        return $this->getTotalCost();
+    }
+
+    public function getPaymentSubject(): string
+    {
+        return "Payment for order #$this->orderNumber";
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function isNew(): bool
+    {
+        return $this->status == 'new';
     }
 }

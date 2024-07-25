@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "16d6372221b7f2faca61dc5f9565002d",
+    "content-hash": "af748cab37478bacb28618f5248f6072",
     "packages": [
         {
             "name": "biblys/isbn",
@@ -173,6 +173,41 @@
                 "source": "https://github.com/CryptomusCom/api-php-sdk/tree/v1.0.0"
             },
             "time": "2022-07-29T15:49:10+00:00"
+        },
+        {
+            "name": "dkrasilnikov/literato-payment-bundle",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/deniskrasilnikov/LiteratoPaymentBundle.git",
+                "reference": "87341a69f93fd34f0ab2926f6092ff30df7cdbf6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/deniskrasilnikov/LiteratoPaymentBundle/zipball/87341a69f93fd34f0ab2926f6092ff30df7cdbf6",
+                "reference": "87341a69f93fd34f0ab2926f6092ff30df7cdbf6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "symfony/framework-bundle": "7.0.*"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Literato\\Bundle\\PaymentBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Demo bundle for PHP Pro course",
+            "support": {
+                "issues": "https://github.com/deniskrasilnikov/LiteratoPaymentBundle/issues",
+                "source": "https://github.com/deniskrasilnikov/LiteratoPaymentBundle/tree/0.1.0"
+            },
+            "time": "2024-07-24T17:36:40+00:00"
         },
         {
             "name": "doctrine/cache",

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="px-4 py-5 my-5 text-center">
+        <h3 >{{ result.subject }}</h3>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">{{ result.status|capitalize }} </p>
+            <p class="mb-4">{{ result.message|default('') }}</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a type="button" class="btn btn-outline-secondary px-4 gap-3" href="{{ path('app_shop_order_show', {'orderNumber': order.orderNumber }) }}">Return to order</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

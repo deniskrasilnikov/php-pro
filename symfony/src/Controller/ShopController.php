@@ -8,9 +8,11 @@ use App\Module\Shop\Entity\Edition;
 use App\Module\Shop\Entity\Order;
 use App\Module\Shop\Repository\EditionRepository;
 use App\Module\Shop\Service\OrderService;
+use Literato\Bundle\PaymentBundle\Gateway\PaymentGatewayInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/shop')]
 class ShopController extends AbstractController
@@ -33,5 +35,19 @@ class ShopController extends AbstractController
     public function showOrder(Order $order): Response
     {
         return $this->render('shop/order.html.twig', ['order' => $order]);
+    }
+
+    #[Route('/orders/{orderNumber}/payment', name: 'app_shop_order_payment')]
+    public function orderPayment(
+        Order $order,
+        #[CurrentUser] $user,
+        PaymentGatewayInterface $paymentGateway
+    ): Response {
+        $result = $paymentGateway->makePayment($order, $user);
+
+        return $this->render('shop/payment_result.html.twig', [
+            'result' => $result,
+            'order' => $order
+        ]);
     }
 }

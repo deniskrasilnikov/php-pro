@@ -16,6 +16,7 @@
         "ext-iconv": "*",
         "biblys/isbn": "^3.0",
         "cryptomus/api-php-sdk": "^1.0",
+        "dkrasilnikov/literato-payment-bundle": "^0.1.0",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^3.3",
