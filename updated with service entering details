@@ -6,7 +6,8 @@
 
 Збудувати та запустити проєкт (всі сервіси) `docker compose up -d`
 
-Зайти всередину PHP сервісу `docker compose exec php bash`<br>
+Зайти всередину PHP сервісу `docker compose exec php bash` або `sh php`<br>
+Зайти всередину PHP сервісу в Xdebug-режимі покрокового дебагінгу `sh php debug`<br>
 Зайти всередину NGINX сервісу `docker compose exec nginx bash`<br>
 Зайти всередину DB сервісу `docker compose exec db bash`
 
