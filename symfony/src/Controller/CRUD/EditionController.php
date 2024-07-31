@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/editions')]
+#[Route('/{_locale}/editions')]
 class EditionController extends AbstractController
 {
     /** Переглянути усі видання (з пагінацією) */

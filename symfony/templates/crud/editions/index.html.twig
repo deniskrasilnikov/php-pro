@@ -2,17 +2,18 @@
 
  {% block body %}
 
-     <h1>Edition list</h1>
+     <h1>{{ 'Edition list'|trans }}</h1>
 
      <div class="book-page-nav">
          {% if app.request.get('page') > 1 %}
-             <a href="{{ path('app_crud_edition_index', {'page': 1 }) }}">&lArr; First</a>
+             <a href="{{ path('app_crud_edition_index', {'page': 1 }) }}">&lArr; {{ 'First'|trans }}</a>
              | <a href="{{ path('app_crud_edition_index', {'page': app.request.get('page') - 1 }) }}">&larr;
-             Previous</a> |
+         {{ 'Previous'|trans }}</a>
+            {% if editions|length %}|{% endif %}
          {% endif %}
 
          {% if editions|length %}
-             <a href="{{ path('app_crud_edition_index', {'page': app.request.get('page', 1) + 1 }) }}">Next &rarr;</a>
+             <a href="{{ path('app_crud_edition_index', {'page': app.request.get('page', 1) + 1 }) }}">{{ 'Next'|trans }} &rarr;</a>
          {% endif %}
      </div>
 
@@ -26,19 +27,18 @@
              {{ book_info(edition.book, edition) }}
 
              <div class="book-actions">
-                 <a class="btn btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id }) }}">Print</a>
-                 <a class="btn btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'advanced' }) }}">Print Advanced</a>
-                 <a class="btn  btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'html' }) }}">Print HTML</a>
+                 <a class="btn btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'advanced' }) }}">{{ 'Print'|trans }}</a>
+                 <a class="btn  btn-light btn-sm" href="{{ path('app_edition_print', {'id': edition.id, 'format': 'html' }) }}">{{ 'Print HTML'|trans }}</a>
 
                  {% if not edition.published %}
-                     <a class="btn btn-success btn-sm" href="{{ path('app_edition_published', {'id': edition.id }) }}">Publish</a>
+                     <a class="btn btn-warning btn-sm" href="{{ path('app_edition_published', {'id': edition.id }) }}">{{ 'Publish'|trans }}</a>
                  {% endif %}
              </div>
 
          {% endfor %}
 
      {% else %}
-         No editions found
+        {{ 'No editions found'|trans }}
      {% endif %}
 
  {% endblock %}

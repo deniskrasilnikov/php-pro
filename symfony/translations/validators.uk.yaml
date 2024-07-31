@@ -1,0 +1,3 @@
+Code is too short or too long: Код невірної довжини
+Name must be at least {{ limit }} characters long: Назва має містити принаймні {{ limit }} символів
+Product code should be 978 or 979: Код продукту має бути 978 чи 979

@@ -1,8 +1,12 @@
 controllers:
     resource:
         path: ../src/Controller/
+        exclude: ../src/Controller/Api/
         namespace: App\Controller
     type: attribute
+#    prefix:
+#        en: ''
+#        uk: /uk
 
 api_controllers:
     resource:
