@@ -10,7 +10,7 @@
         </div>
 
         <div class="ms-1">
-            <div class="book-name">{{ book.name }} </div>
+            <div class="book-name">{{ book.name(app.request.locale) }} </div>
             <div class="book-author">By {{ book.author.fullName }}</div>
 
 

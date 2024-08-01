@@ -12,21 +12,25 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class BookType extends AbstractType
 {
+    public function __construct(private array $supportedLocales)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder->getData()->createTranslations($this->supportedLocales);
+
         $builder
-            ->add('name', null, [
-                'label' => 'Name',
-                'attr' => [
-                    'placeholder' => 'Book name',
-                    'pattern' => false // подавити валідацію в браузері
-                ]
+            ->add('translations', CollectionType::class, [
+                'entry_type' => BookTranslationType::class,
+                'label' => false,
             ])
             ->add('author', EntityType::class, [
                 'class' => Author::class,

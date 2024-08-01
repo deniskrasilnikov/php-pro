@@ -29,3 +29,5 @@ book:
     genres: Жанри
     synopsis: Синопсис
 
+flashes:
+    book_updated_successfully: Книга %book_name% успішно збережена
