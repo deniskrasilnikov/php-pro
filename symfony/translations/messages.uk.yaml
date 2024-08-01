@@ -24,10 +24,18 @@ Science fiction: Наукова фантастика
 Magical realism: Магічний реалізм
 Horror: Жахи
 
+Delete book %name%?: Видалити книгу %name%?
+
+# Дії
+Show: Деталі
+Edit: Редагувати
+Delete: Видалити
+
 book:
     type: Вид
     genres: Жанри
     synopsis: Синопсис
+    text: Текст
 
 flashes:
     book_updated_successfully: Книга %book_name% успішно збережена

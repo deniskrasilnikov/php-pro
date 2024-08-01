@@ -49,12 +49,12 @@ class BookType extends AbstractType
                 ]
             ])
             ->add('genres', EnumType::class, [
-                'label' => 'Genres',
+                'label' => 'book.genres',
                 'class' => Genre::class,
                 'multiple' => true,
                 'expanded' => true
             ])->add('text', TextareaType::class, [
-                'label' => 'Text',
+                'label' => 'book.text',
                 'attr' => [
                     'placeholder' => 'Enter book text here ...'
                 ],
@@ -62,7 +62,7 @@ class BookType extends AbstractType
 
         if ($builder->getData() instanceof Novel) {
             $builder->add('synopsis', TextareaType::class, [
-                'label' => 'Synopsis',
+                'label' => 'book.synopsis',
             ]);
         }
     }

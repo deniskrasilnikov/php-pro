@@ -2,8 +2,9 @@
 
 {% block body %}
     {# імпортування та використання макросу рендерінгу інформації про книгу #}
-    {% from "crud/books/_macros.html.twig" import book_info %}
+    {% from "crud/books/_macros.html.twig" import book_info, book_actions %}
     {{ book_info(book) }}
+    {{ book_actions(book) }}
 
     <h3 class="mt-4">Book text</h3>
     <p>{{ book.text }}</p>

@@ -2,6 +2,6 @@ book:
     type: Type
     genres: Genres
     synopsis: Synopsis
-
+    text: Text
 flashes:
     book_updated_successfully: Book %book_name% updated successfully

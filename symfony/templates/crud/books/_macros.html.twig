@@ -10,9 +10,16 @@
         </div>
 
         <div class="ms-1">
-            <div class="book-name">{{ book.name(app.request.locale) }} </div>
+            <div class="book-name">
+                {% set book_name = book.name(app.request.locale) %}
+                {% if app.current_route != 'app_crud_book_show' %}
+                    <a href="{{ path('app_crud_book_show', {'id': book.id }) }}" class="link-secondary"
+                       data-toggle="tooltip" title="Book details">{{ book.name(app.request.locale) }}</a>
+                {% else %}
+                    {{ book_name }}
+                {% endif %}
+            </div>
             <div class="book-author">By {{ book.author.fullName }}</div>
-
 
             {% if edition.published|default(false) %}
                 <div><span class="badge bg-success">{{ 'published'|trans }}</span></div>
@@ -30,5 +37,13 @@
             {% endif %}
 
         </div>
+    </div>
+{% endmacro %}
+
+{% macro book_actions(book) %}
+    <div class="book-actions">
+       <a href="{{ path('app_crud_book_update', {'id': book.id }) }}">{{ 'Edit'|trans }}</a>
+        | <a href="{{ path('app_crud_book_delete', {'id': book.id }) }}"
+             onclick="return confirm('{{ 'Delete book %name%?'|trans({ '%name%': book.name(app.request.locale)}) }}')">{{ 'Delete'|trans }}</a>
     </div>
 {% endmacro %}

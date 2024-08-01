@@ -15,19 +15,12 @@
 
      {% if books|length %}
          {# імпортування макросу book_info #}
-         {% from "crud/books/_macros.html.twig" import book_info %}
+         {% from "crud/books/_macros.html.twig" import book_info, book_actions %}
 
          {% for book in books %}
              {# використання макросу book_info - рендерінг інформації про книгу #}
-
              {{ book_info(book) }}
-
-             <div class="book-actions">
-                 <a href="{{ path('app_crud_book_show', {'id': book.id }) }}">Show</a>
-                 | <a href="{{ path('app_crud_book_update', {'id': book.id }) }}">Edit</a>
-                 | <a href="{{ path('app_crud_book_delete', {'id': book.id }) }}"
-                      onclick="return confirm('Delete book {{ book.name }}?')">Delete</a>
-             </div>
+             {{ book_actions(book) }}
          {% endfor %}
 
      {% else %}
