@@ -9,6 +9,8 @@ use App\Module\Literato\Entity\Enum\Genre;
 use App\Module\Literato\Entity\Exception\BookValidationException;
 use App\Module\Literato\Repository\BookRepository;
 use App\Module\Literato\Service\Printing\PrintableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\{Column,
     DiscriminatorColumn,
@@ -19,7 +21,9 @@ use Doctrine\ORM\Mapping\{Column,
     InheritanceType,
     JoinColumn,
     ManyToOne,
-    Table};
+    OneToMany,
+    Table
+};
 use Symfony\Component\Serializer\Attribute as Serialize;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -35,12 +39,6 @@ abstract class Book implements BookInterface, PrintableInterface
     #[Column(type: Types::INTEGER)]
     #[Serialize\Groups(['book_list', 'book_item'])]
     private int $id;
-
-    #[Column(length: 150)]
-    #[Assert\Length(min: 5, minMessage: 'Name must be at least {{ limit }} characters long',
-    )]
-    #[Serialize\Groups(['book_list'])]
-    private string $name;
 
     #[Column(length: 13)]
     #[Assert\Isbn(type: Assert\Isbn::ISBN_10,)]
@@ -61,6 +59,42 @@ abstract class Book implements BookInterface, PrintableInterface
     #[Serialize\Groups(['book_list', 'book_item'])]
     private array $genres = [];
 
+    /** @var Collection<int, BookTranslation> */
+    #[OneToMany(targetEntity: BookTranslation::class, mappedBy: 'book', cascade: ['persist', 'remove'])]
+    private Collection $translations;
+
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+    }
+
+    public function getTranslations(): Collection
+    {
+        return $this->translations;
+    }
+
+    public function getTranslation(string $locale): ?BookTranslation
+    {
+        return $this->translations->findFirst(fn($_, $t) => $t->getLocale() == $locale);
+    }
+
+    public function addTranslation(BookTranslation $t)
+    {
+        if (!$this->getTranslation($t->getLocale())) {
+            $this->translations[] = $t;
+            $t->setBook($this);
+        }
+    }
+
+    public function createTranslations(array $locales): void
+    {
+        foreach ($locales as $locale) {
+            $t = new BookTranslation($locale);
+            $t->setLocale($locale);
+            $this->addTranslation($t);
+        }
+    }
+
     /**
      * @param int $id
      */
@@ -77,24 +111,17 @@ abstract class Book implements BookInterface, PrintableInterface
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getName(): string
+    public function getName(string $locale = null): string
     {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        if (empty($name)) {
-            throw new BookValidationException('Book name must not be empty');
+        if ($locale && ($translation = $this->getTranslation($locale))) {
+            return $translation->getName();
         }
 
-        $this->name = $name;
+        if ($this->translations->first()) {
+            $this->translations->first()->getName();
+        }
+
+        return 'Unknown name';
     }
 
     /**

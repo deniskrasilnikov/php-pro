@@ -1,0 +1,33 @@
+Edition list: Видання
+Book list: Книги
+Previous: Назад
+First: На початок
+Next: Вперед
+Print: Друк
+Print HTML: Друк HTML
+Publish: Видати
+published: видане
+Today`s Best Sellers: Лідери продажів
+No editions found: Видань більше нема
+Name [%locale%]: Назва [%locale%]
+Publisher: Видавництво
+Author: Автор
+
+# Базові різновиди книг
+Novel: Роман
+Novelette: Новела
+
+# Жанри книг
+Thriller: Трилер
+Romance: Романтика
+Science fiction: Наукова фантастика
+Magical realism: Магічний реалізм
+Horror: Жахи
+
+book:
+    type: Вид
+    genres: Жанри
+    synopsis: Синопсис
+
+flashes:
+    book_updated_successfully: Книга %book_name% успішно збережена

@@ -43,13 +43,32 @@
                     <ul class="dropdown-menu">
                         {% for bookType in book_types() %}
                             <li>
-                                <a href="{{ path('app_crud_book_new', {bookType: bookType}) }}" class="dropdown-item">{{ bookType }}</a>
+                                <a href="{{ path('app_crud_book_new', {bookType: bookType}) }}" class="dropdown-item">{{ bookType|trans }}</a>
                             </li>
                         {% endfor %}
                     </ul>
                 </li>
                 <li class="nav-item">
                     <a href="{{ path('app_webattacks') }}" class="nav-link">Web attacks</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown-language" role="button"
+                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ app.request.locale|locale_name }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown-language">
+                        {# Приклад реалізації переключення мов, яке враховую поточну сторінку (маршрут та додаткові параметри запиту) #}
+                        {% for locale in app.enabled_locales %}
+                            <li><a class="dropdown-item"
+                                   href="{{ path(app.request.get('_route'), {}|merge(app.request.query.all, app.current_route_parameters, {_locale: locale})) }}">
+                                    {{ locale|locale_name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="/logout" class="nav-link">Log out</a>

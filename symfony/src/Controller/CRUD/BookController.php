@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use const FILTER_VALIDATE_REGEXP;
 
@@ -83,7 +84,7 @@ class BookController extends AbstractController
     /** Редагувати книгу */
     #[Route('/{id}/_update', name: 'app_crud_book_update', requirements: ['id' => Requirement::POSITIVE_INT],
         methods: ['GET', 'POST'])]
-    public function update(Book $book, Request $request, EntityManagerInterface $entityManager): Response
+    public function update(Book $book, Request $request, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(BookForm::class, $book);
 
@@ -92,8 +93,13 @@ class BookController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            $this->addFlash('success', "Book {$book->getName()} updated successfully");
-
+            $this->addFlash(
+                'success',
+                $translator->trans(
+                    'flashes.book_updated_successfully',
+                    ['%book_name%' => $book->getName($request->getLocale())]
+                )
+            );
             return $this->redirectToRoute('app_crud_book_show', ['id' => $book->getId()]);
         }
 

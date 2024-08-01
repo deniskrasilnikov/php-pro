@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Today`s Best Sellers</h1>
+    <h1>{{ 'Today`s Best Sellers'|trans }}</h1>
 
     <div class="row">
         {% for edition in bestSellers %}

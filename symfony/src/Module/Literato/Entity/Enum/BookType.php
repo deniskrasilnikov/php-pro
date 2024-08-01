@@ -17,7 +17,7 @@ enum BookType: string
     case Novelette = 'Novelette';
     case Novel = 'Novel';
 
-    public function entity(): object
+    public function entity(): Novelette|Novel
     {
         return new (self::ENTITY_MAP[$this->name])();
     }

@@ -1,0 +1,7 @@
+book:
+    type: Type
+    genres: Genres
+    synopsis: Synopsis
+
+flashes:
+    book_updated_successfully: Book %book_name% updated successfully

@@ -8,6 +8,7 @@ use App\Module\Literato\Entity\Enum\BookType;
 use Biblys\Isbn\Isbn;
 use Exception;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Intl\Locales;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -31,7 +32,17 @@ class AppExtension extends AbstractExtension
             new TwigFilter('price', [$this, 'formatPrice']),
             new TwigFilter('cents', [$this, 'formatCents']),
             new TwigFilter('isbn10', [$this, 'isbn10']),
+            new TwigFilter('locale_name', [$this, 'getLocaleName']),
         ];
+    }
+
+    public function getLocaleName(?string $locale): string
+    {
+        if (null === $locale) {
+            return '';
+        }
+
+        return mb_convert_case(Locales::getName($locale, $locale), MB_CASE_TITLE, 'UTF-8');
     }
 
     public function getBookTypes(): array
