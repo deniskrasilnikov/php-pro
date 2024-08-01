@@ -118,7 +118,7 @@ abstract class Book implements BookInterface, PrintableInterface
         }
 
         if ($this->translations->first()) {
-            $this->translations->first()->getName();
+            return $this->translations->first()->getName();
         }
 
         return 'Unknown name';
